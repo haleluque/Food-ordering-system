@@ -1,2 +1,25 @@
-package com.food.ordering.system.order.service.domain.event;public class OrderEvent {
+package com.food.ordering.system.order.service.domain.event;
+
+import com.food.ordering.system.domain.events.DomainEvent;
+import com.food.ordering.system.order.service.domain.entitiy.Order;
+
+import java.time.ZonedDateTime;
+
+public class OrderEvent implements DomainEvent<Order> {
+    private final Order order;
+    private final ZonedDateTime createdAt;
+
+    //no builder as it only has 2 fields
+    public OrderEvent(Order order, ZonedDateTime createdAt) {
+        this.order = order;
+        this.createdAt = createdAt;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
 }

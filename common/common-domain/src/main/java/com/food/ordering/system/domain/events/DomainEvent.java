@@ -7,5 +7,5 @@ package com.food.ordering.system.domain.events;
  *
  * @param <T> Marker Entity
  */
-public interface DomainEvents<T> {
+public interface DomainEvent<T> {
 }

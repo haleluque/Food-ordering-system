@@ -1,2 +1,50 @@
-package com.food.ordering.system.order.service.domain.valueObject;public class StreetAddress {
+package com.food.ordering.system.order.service.domain.valueObject;
+
+import java.util.Objects;
+import java.util.UUID;
+
+public class StreetAddress {
+
+    //this value doesn't need to extend from baseId as it will not be used
+    //for comparison purpose, just as a PK on the db
+    private final UUID id;
+    private final String street;
+    private final String postalCode;
+    private final String city;
+
+    public StreetAddress(UUID id, String street, String postalCode, String city) {
+        this.id = id;
+        this.street = street;
+        this.postalCode = postalCode;
+        this.city = city;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StreetAddress that = (StreetAddress) o;
+        return Objects.equals(street, that.street) && Objects.equals(postalCode, that.postalCode) && Objects.equals(city, that.city);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(street, postalCode, city);
+    }
 }
