@@ -5,6 +5,7 @@ import com.food.ordering.system.domain.valueObject.Money;
 import com.food.ordering.system.domain.valueObject.ProductId;
 import com.food.ordering.system.domain.valueObject.RestaurantId;
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;
+import com.food.ordering.system.order.service.domain.dto.create.CreateOrderResponse;
 import com.food.ordering.system.order.service.domain.dto.create.OrderAddress;
 import com.food.ordering.system.order.service.domain.entitiy.Order;
 import com.food.ordering.system.order.service.domain.entitiy.OrderItem;
@@ -60,5 +61,12 @@ public class OrderDataMapper {
                 address.getPostalCode(),
                 address.getCity()
         );
+    }
+
+    public CreateOrderResponse orderToCreateOrderResponse(Order order) {
+        return CreateOrderResponse.builder()
+                .orderTrackingId(order.getTrackingId().getValue())
+                .orderStatus(order.getOrderStatus())
+                .build();
     }
 }
