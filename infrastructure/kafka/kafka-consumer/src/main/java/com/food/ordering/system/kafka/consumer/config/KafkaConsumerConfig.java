@@ -60,23 +60,4 @@ public class KafkaConsumerConfig<K extends Serializable, V extends SpecificRecor
         factory.getContainerProperties().setPollTimeout(kafkaConsumerConfigData.getPollTimeoutMs());
         return factory;
     }
-
-    //Use later
-//    private BiConsumer<SendResult<String, AvroModel>, Throwable>
-//    getCallback(String topicName, AvroModel message) {
-//
-//        return (result, ex) -> {
-//            if (ex == null) {
-//                RecordMetadata metadata = result.getRecordMetadata();
-//                log.info("Received new metadata. Topic: {}; Partition {}; Offset {}; Timestamp {}, at time {}",
-//                        metadata.topic(),
-//                        metadata.partition(),
-//                        metadata.offset(),
-//                        metadata.timestamp(),
-//                        System.nanoTime());
-//            } else {
-//                log.error("Error while sending message {} to topic {}", message.toString(), topicName, ex);
-//            }
-//        };
-//    }
 }
