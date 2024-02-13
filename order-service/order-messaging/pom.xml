@@ -11,10 +11,6 @@
 
     <artifactId>order-messaging</artifactId>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.food.ordering.system</groupId>
@@ -23,6 +19,7 @@
         <dependency>
             <groupId>com.food.ordering.system</groupId>
             <artifactId>kafka-producer</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.food.ordering.system</groupId>

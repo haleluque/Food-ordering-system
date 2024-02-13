@@ -1,7 +1,7 @@
 package com.food.ordering.system.order.service.domain.entitiy;
 
-import com.food.ordering.system.domain.entitiy.AggregateRoot;
-import com.food.ordering.system.domain.valueObject.*;
+import com.food.ordering.system.domain.entity.AggregateRoot;
+import com.food.ordering.system.domain.valueobject.*;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.valueObject.OrderItemId;
 import com.food.ordering.system.order.service.domain.valueObject.StreetAddress;
@@ -9,8 +9,6 @@ import com.food.ordering.system.order.service.domain.valueObject.TrackingId;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Order extends AggregateRoot<OrderId> {
     private final CustomerId customerId;

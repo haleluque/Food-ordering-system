@@ -1,10 +1,8 @@
 package com.food.ordering.system.order.service.dataAccess.order.entity;
 
-import com.food.ordering.system.domain.valueObject.OrderStatus;
+import com.food.ordering.system.domain.valueobject.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Type;
-import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 
 import java.math.BigDecimal;
 import java.util.List;
