@@ -29,6 +29,8 @@ CREATE TABLE restaurant.order_approval
     CONSTRAINT order_approval_pkey PRIMARY KEY (id)
 );
 
+CREATE CAST (varchar AS approval_status) WITH INOUT AS IMPLICIT;
+
 DROP TABLE IF EXISTS restaurant.products CASCADE;
 
 CREATE TABLE restaurant.products

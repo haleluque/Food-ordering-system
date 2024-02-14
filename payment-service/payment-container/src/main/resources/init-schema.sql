@@ -21,6 +21,8 @@ CREATE TABLE "payment".payments
     CONSTRAINT payments_pkey PRIMARY KEY (id)
 );
 
+CREATE CAST (varchar AS payment_status) WITH INOUT AS IMPLICIT;
+
 DROP TABLE IF EXISTS "payment".credit_entry CASCADE;
 
 CREATE TABLE "payment".credit_entry
@@ -45,3 +47,5 @@ CREATE TABLE "payment".credit_history
     type transaction_type NOT NULL,
     CONSTRAINT credit_history_pkey PRIMARY KEY (id)
 );
+
+CREATE CAST (varchar AS transaction_type) WITH INOUT AS IMPLICIT;
