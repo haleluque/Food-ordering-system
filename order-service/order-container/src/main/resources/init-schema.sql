@@ -16,7 +16,7 @@ CREATE TABLE "order".orders
     restaurant_id uuid NOT NULL,
     tracking_id uuid NOT NULL,
     price numeric(10,2) NOT NULL,
-    order_status order_status NOT NULL,0
+    order_status order_status NOT NULL,
     failure_messages character varying COLLATE pg_catalog."default",
     CONSTRAINT orders_pkey PRIMARY KEY (id)
 );

@@ -19,7 +19,8 @@ public class PaymentMessagingDataMapper {
     paymentCompletedEventToPaymentResponseAvroModel(PaymentCompletedEvent paymentCompletedEvent) {
         return PaymentResponseAvroModel.newBuilder()
                 .setId(UUID.randomUUID())
-                .setSagaId(UUID.fromString(""))
+                //.setSagaId(UUID.fromString(""))
+                .setSagaId(UUID.randomUUID())
                 .setPaymentId(paymentCompletedEvent.getPayment().getId().getValue())
                 .setCustomerId(paymentCompletedEvent.getPayment().getCustomerId().getValue())
                 .setOrderId(paymentCompletedEvent.getPayment().getOrderId().getValue())
@@ -34,7 +35,8 @@ public class PaymentMessagingDataMapper {
     paymentCancelledEventToPaymentResponseAvroModel(PaymentCancelledEvent paymentCancelledEvent) {
         return PaymentResponseAvroModel.newBuilder()
                 .setId(UUID.randomUUID())
-                .setSagaId(UUID.fromString(""))
+                //.setSagaId(UUID.fromString(""))
+                .setSagaId(UUID.randomUUID())
                 .setPaymentId(paymentCancelledEvent.getPayment().getId().getValue())
                 .setCustomerId(paymentCancelledEvent.getPayment().getCustomerId().getValue())
                 .setOrderId(paymentCancelledEvent.getPayment().getOrderId().getValue())
@@ -49,7 +51,8 @@ public class PaymentMessagingDataMapper {
     paymentFailedEventToPaymentResponseAvroModel(PaymentFailedEvent paymentFailedEvent) {
         return PaymentResponseAvroModel.newBuilder()
                 .setId(UUID.randomUUID())
-                .setSagaId(UUID.fromString(""))
+                //.setSagaId(UUID.fromString(""))
+                .setSagaId(UUID.randomUUID())
                 .setPaymentId(paymentFailedEvent.getPayment().getId().getValue())
                 .setCustomerId(paymentFailedEvent.getPayment().getCustomerId().getValue())
                 .setOrderId(paymentFailedEvent.getPayment().getOrderId().getValue())

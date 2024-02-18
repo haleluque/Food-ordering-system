@@ -18,7 +18,7 @@ public class KafkaMessageHelper {
         return (result, ex) -> {
             if (ex == null) {
                 RecordMetadata metadata = result.getRecordMetadata();
-                log.info("Received new metadata for order id: {}, Topic: {}; Partition {}; Offset {}; Timestamp {}, at time {}",
+                log.info("Received successfully response from kafka for order id: {}, Topic: {}; Partition {}; Offset {}; Timestamp {}, at time {}",
                         orderId,
                         metadata.topic(),
                         metadata.partition(),
