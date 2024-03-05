@@ -8,5 +8,4 @@ package com.food.ordering.system.domain.event;
  * @param <T> Marker Entity
  */
 public interface DomainEvent<T> {
-    void fire();
 }
