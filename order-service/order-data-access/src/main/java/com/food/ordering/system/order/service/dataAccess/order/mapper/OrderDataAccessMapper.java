@@ -4,9 +4,9 @@ import com.food.ordering.system.domain.valueobject.*;
 import com.food.ordering.system.order.service.dataAccess.order.entity.OrderAddressEntity;
 import com.food.ordering.system.order.service.dataAccess.order.entity.OrderEntity;
 import com.food.ordering.system.order.service.dataAccess.order.entity.OrderItemEntity;
-import com.food.ordering.system.order.service.domain.entitiy.Order;
-import com.food.ordering.system.order.service.domain.entitiy.OrderItem;
-import com.food.ordering.system.order.service.domain.entitiy.Product;
+import com.food.ordering.system.order.service.domain.entity.Order;
+import com.food.ordering.system.order.service.domain.entity.OrderItem;
+import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.valueObject.OrderItemId;
 import com.food.ordering.system.order.service.domain.valueObject.StreetAddress;
 import com.food.ordering.system.order.service.domain.valueObject.TrackingId;
@@ -17,7 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.food.ordering.system.order.service.domain.entitiy.Order.FAILURE_MESSAGE_DELIMITER;
+import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
 
 @Component
 public class OrderDataAccessMapper {
