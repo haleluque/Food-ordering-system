@@ -32,6 +32,7 @@ public class OrderCreateCommandHandler {
      * For this exercise, there are 2 branches where 2 options of publishing were implemented. For more details, go to:
      * - publish-event-option-1
      * - publish-event-option-2
+     * The one used in master branch is option 1
      *
      * @param createOrderCommand create order command object
      * @return CreateOrderResponse object

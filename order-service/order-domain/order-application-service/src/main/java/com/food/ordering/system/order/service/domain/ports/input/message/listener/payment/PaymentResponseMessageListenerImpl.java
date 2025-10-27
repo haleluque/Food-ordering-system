@@ -11,11 +11,11 @@ import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE
 @Slf4j
 @Validated
 @Service
-public class PaymentResponseEventListenerImpl implements PaymentResponseMessageListener {
+public class PaymentResponseMessageListenerImpl implements PaymentResponseMessageListener {
 
     private final OrderPaymentSaga orderPaymentSaga;
 
-    public PaymentResponseEventListenerImpl(OrderPaymentSaga orderPaymentSaga) {
+    public PaymentResponseMessageListenerImpl(OrderPaymentSaga orderPaymentSaga) {
         this.orderPaymentSaga = orderPaymentSaga;
     }
 

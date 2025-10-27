@@ -11,11 +11,11 @@ import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE
 @Slf4j
 @Validated
 @Service
-public class RestaurantApprovalResponseListenerImpl implements RestaurantApprovalResponseMessageListener {
+public class RestaurantApprovalResponseMessageListenerImpl implements RestaurantApprovalResponseMessageListener {
 
     private final OrderApprovalSaga orderApprovalSaga;
 
-    public RestaurantApprovalResponseListenerImpl(OrderApprovalSaga orderApprovalSaga) {
+    public RestaurantApprovalResponseMessageListenerImpl(OrderApprovalSaga orderApprovalSaga) {
         this.orderApprovalSaga = orderApprovalSaga;
     }
 
