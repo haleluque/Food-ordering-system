@@ -18,13 +18,13 @@ public class OrderCreateCommandHandler {
     private final OrderCreateHelper orderCreateHelper;
     private final OrderDataMapper orderDataMapper;
     private final PaymentOutboxHelper paymentOutboxHelper;
-    private final OrderSagaHelper orderSagaHelpler;
+    private final OrderSagaHelper orderSagaHelper;
 
-    public OrderCreateCommandHandler(OrderCreateHelper orderCreateHelper, OrderDataMapper orderDataMapper, PaymentOutboxHelper paymentOutboxHelper, OrderSagaHelper orderSagaHelpler) {
+    public OrderCreateCommandHandler(OrderCreateHelper orderCreateHelper, OrderDataMapper orderDataMapper, PaymentOutboxHelper paymentOutboxHelper, OrderSagaHelper orderSagaHelper) {
         this.orderCreateHelper = orderCreateHelper;
         this.orderDataMapper = orderDataMapper;
         this.paymentOutboxHelper = paymentOutboxHelper;
-        this.orderSagaHelpler = orderSagaHelpler;
+        this.orderSagaHelper = orderSagaHelper;
     }
 
     @Transactional
@@ -35,7 +35,7 @@ public class OrderCreateCommandHandler {
 
         paymentOutboxHelper.savePaymentOutboxMessage(orderDataMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent),
                 orderCreatedEvent.getOrder().getOrderStatus(),
-                orderSagaHelpler.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),
+                orderSagaHelper.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),
                 OutboxStatus.STARTED,
                 UUID.randomUUID());
 

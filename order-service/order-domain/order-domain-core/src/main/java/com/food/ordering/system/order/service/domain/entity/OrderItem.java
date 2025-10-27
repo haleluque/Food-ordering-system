@@ -23,6 +23,7 @@ public class OrderItem extends BaseEntity<OrderItemId> {
                 price.multiply(quantity).equals(subTotal);
     }
 
+    //only through builder can this entity be created
     private OrderItem(Builder builder) {
         super.setId(builder.orderItemId);
         product = builder.product;
@@ -51,6 +52,8 @@ public class OrderItem extends BaseEntity<OrderItemId> {
         return subTotal;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private OrderItemId orderItemId;
         private Product product;

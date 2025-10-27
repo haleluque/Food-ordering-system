@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.food.ordering.system.domain.DomainConstants.UTC;
 
@@ -20,6 +22,8 @@ import static com.food.ordering.system.domain.DomainConstants.UTC;
  */
 @Slf4j
 public class OrderDomainServiceImpl implements OrderDomainService {
+
+    //Use multiple aggregates to check business requirements
     @Override
     public OrderCreatedEvent validateAndInitiateOrder(Order order, Restaurant restaurant) {
         validateRestaurant(restaurant);
@@ -63,15 +67,21 @@ public class OrderDomainServiceImpl implements OrderDomainService {
         }
     }
 
-    //TODO: reduce complexity using hash map
     private void setOrderProductInformation(Order order, Restaurant restaurant) {
-        order.getItems().forEach(orderItem -> restaurant.getProducts().forEach(restaurantProduct -> {
-            Product currentProduct = orderItem.getProduct();
-            if (currentProduct.equals(restaurantProduct)) {
-                currentProduct.updateWithConfirmedNameAndPrice(restaurantProduct.getName(),
-                        restaurantProduct.getPrice());
-            }
-        }));
-    }
+        //the product is the key and the value
+        Map<Product, Product> productLookup = restaurant.getProducts().stream()
+                .collect(Collectors.toMap(p -> p, p -> p));
 
+        order.getItems().forEach(orderItem -> {
+            Product currentProduct = orderItem.getProduct();
+            //easy to find as long as hashmap and equals are correctly implemented
+            Product confirmedProduct = productLookup.get(currentProduct);
+            if (confirmedProduct != null) {
+                currentProduct.updateWithConfirmedNameAndPrice(
+                        confirmedProduct.getName(),
+                        confirmedProduct.getPrice()
+                );
+            }
+        });
+    }
 }

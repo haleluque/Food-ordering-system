@@ -25,6 +25,8 @@ public class Order extends AggregateRoot<OrderId> {
 
     public static final String FAILURE_MESSAGE_DELIMITER = ",";
 
+    //Critical method rules a reused to change values and states
+    //instead of set methods
     public void initializeOrder() {
         setId(new OrderId(UUID.randomUUID()));
         trackingId = new TrackingId(UUID.randomUUID());
@@ -94,7 +96,7 @@ public class Order extends AggregateRoot<OrderId> {
         Money orderedItemsTotal = items.stream().map(orderItem -> {
             validateItemPrice(orderItem);
             return orderItem.getSubTotal();
-        }).reduce(Money.ZERO, Money::add);
+        }).reduce(Money.ZERO, Money::add); //sums up all items subtotal price
 
         if (!price.equals(orderedItemsTotal)) {
             throw new OrderDomainException("Total price: " + price.getAmount()
@@ -121,6 +123,7 @@ public class Order extends AggregateRoot<OrderId> {
         }
     }
 
+    //only through builder can this entity be created
     private Order(Builder builder) {
         super.setId(builder.orderId);
         customerId = builder.customerId;
@@ -165,6 +168,8 @@ public class Order extends AggregateRoot<OrderId> {
         return failureMessages;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private OrderId orderId;
         private CustomerId customerId;

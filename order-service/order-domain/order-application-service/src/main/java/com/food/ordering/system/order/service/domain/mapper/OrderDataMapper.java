@@ -52,7 +52,8 @@ public class OrderDataMapper {
                         .quantity(orderItem.getQuantity())
                         .price(new Money(orderItem.getPrice()))
                         .subTotal(new Money(orderItem.getSubTotal()))
-                        .build()).collect(Collectors.toList());
+                        .build())
+                .collect(Collectors.toList());
     }
 
 

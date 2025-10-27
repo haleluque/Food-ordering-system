@@ -13,8 +13,10 @@ public class Money {
         this.amount = amount;
     }
 
+    //You can delegate business operations to the value objects
     public boolean isGreaterThanZero() {
         return this.amount != null &&
+                //compare to is better than .equals as 0.00 equals 0 = false
                 this.amount.compareTo(BigDecimal.ZERO) > 0;
     }
 
@@ -35,6 +37,16 @@ public class Money {
         return new Money(setScale(this.amount.multiply(new BigDecimal(multiplier))));
     }
 
+    /**
+     * After each BigDecimal operation, the number will be reduced to that scaled
+     *
+     * @param input the money amount
+     * @return the decimal number with 2 digits after the point
+     */
+    private BigDecimal setScale(BigDecimal input) {
+        return input.setScale(2, RoundingMode.HALF_EVEN);
+    }
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -50,15 +62,5 @@ public class Money {
     @Override
     public int hashCode() {
         return Objects.hash(amount);
-    }
-
-    /**
-     * After each BigDecimal operation, the number will be reduced to that scaled
-     *
-     * @param input the money amount
-     * @return the decimal number with 2 digits after the point
-     */
-    private BigDecimal setScale(BigDecimal input) {
-        return input.setScale(2, RoundingMode.HALF_EVEN);
     }
 }

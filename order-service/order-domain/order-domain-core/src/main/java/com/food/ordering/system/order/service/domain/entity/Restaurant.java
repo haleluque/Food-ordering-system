@@ -9,6 +9,7 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
     private final List<Product> products;
     private boolean active;
 
+    //only through builder can this entity be created
     private Restaurant(Builder builder) {
         super.setId(builder.restaurantId);
         products = builder.products;
@@ -23,6 +24,8 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         return active;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private RestaurantId restaurantId;
         private List<Product> products;
