@@ -25,7 +25,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     public static final String FAILURE_MESSAGE_DELIMITER = ",";
 
-    //Critical method rules a reused to change values and states
+    //Critical method rules are used to change values and states
     //instead of set methods
     public void initializeOrder() {
         setId(new OrderId(UUID.randomUUID()));
