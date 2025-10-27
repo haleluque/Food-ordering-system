@@ -27,6 +27,15 @@ public class OrderCreateCommandHandler {
         this.orderSagaHelper = orderSagaHelper;
     }
 
+    /**
+     * Method that creates, persist and publish a createOrderCommand
+     * For this exercise, there are 2 branches where 2 options of publishing were implemented. For more details, go to:
+     * - publish-event-option-1
+     * - publish-event-option-2
+     *
+     * @param createOrderCommand create order command object
+     * @return CreateOrderResponse object
+     */
     @Transactional
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         OrderCreatedEvent orderCreatedEvent = orderCreateHelper.persistOrder(createOrderCommand);
