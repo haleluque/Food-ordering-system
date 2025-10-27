@@ -17,6 +17,12 @@ public class ApplicationDomainEventPublisher implements ApplicationEventPublishe
         this.applicationEventPublisher = applicationEventPublisher;
     }
 
+    /**
+     * This method publishes the event using the @TransactionalEventListener annotation from spring framework
+     * Once the publishEvent method is called, the class OrderCreatedEventApplicationListener, will listen to the change
+     * and publish the message. Through the "process" method
+     * @param domainEvent Order created event
+     */
     @Override
     public void publish(OrderCreatedEvent domainEvent) {
         this.applicationEventPublisher.publishEvent(domainEvent);

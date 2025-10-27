@@ -18,7 +18,7 @@ public class OrderCreatedEventApplicationListener {
 
     /**
      * This method will only be executed when the 'ApplicationDomainEventPublisher' class that implements the DomainEventPublisher
-     * calls the 'publish' method, and only when the @Transaction is completed and commited
+     * calls the 'publish' method, and ONLY when the @Transaction is completed and commited
      * @param orderCreatedEvent
      */
     @TransactionalEventListener

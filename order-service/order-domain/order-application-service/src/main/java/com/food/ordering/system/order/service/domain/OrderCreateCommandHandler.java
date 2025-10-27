@@ -48,6 +48,7 @@ public class OrderCreateCommandHandler {
         Order orderResult = saveOrder(order);
         log.info("Order is created with id {} ", orderResult.getId().getValue());
         //publish the event, ONLY when the transaction has been completed and committed
+        //Uses TransactionalEventListener from spring framework
         applicationDomainEventPublisher.publish(orderCreatedEvent);
         return orderToCreateOrderResponse(orderResult);
     }
