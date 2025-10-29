@@ -39,8 +39,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-//Linked the mock beans on the config class
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) //by default is per-method
+//Linked the mock beans on the config class and creates a
+//Single instance of the test class, by default is per-method
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @SpringBootTest(classes = OrderTestConfiguration.class)
 public class OrderApplicationServiceTest {
     //Real beans -  not in the config file
