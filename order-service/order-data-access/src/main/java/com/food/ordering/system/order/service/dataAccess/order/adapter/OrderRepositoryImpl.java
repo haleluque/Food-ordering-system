@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class OrderRepositoryImpl implements OrderRepository {
 
@@ -23,7 +26,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order save(Order order) {
-        return orderDataAccessMapper.orderEntityToOrder(orderJpaRepository.save(orderDataAccessMapper.orderToOrderEntity(order)));
+        return orderDataAccessMapper.orderEntityToOrder(
+                orderJpaRepository.save(
+                        orderDataAccessMapper.orderToOrderEntity(order)));
     }
 
     @Override

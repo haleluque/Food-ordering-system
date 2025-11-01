@@ -10,8 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class CustomerRepositoryImpl implements CustomerRepository {
+
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerDataAccessMapper customerDataAccessMapper;
 
@@ -29,7 +33,9 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Transactional
     @Override
     public Customer save(Customer customer) {
-        return customerDataAccessMapper.customerEntityToCustomer(
-                customerJpaRepository.save(customerDataAccessMapper.customerToCustomerEntity(customer)));
+        return
+            customerDataAccessMapper.customerEntityToCustomer(
+                customerJpaRepository.save(
+                        customerDataAccessMapper.customerToCustomerEntity(customer)));
     }
 }

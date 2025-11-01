@@ -56,14 +56,16 @@ public class OrderDataAccessMapper {
     }
 
     private List<OrderItem> orderItemsEntitiesToOrderItems(List<OrderItemEntity> items) {
-        return items.stream().map(orderItemEntity ->
+        return items.stream()
+            .map(orderItemEntity ->
                 OrderItem.Builder.builder()
                         .id(new OrderItemId(orderItemEntity.getId()))
                         .product(new Product(new ProductId(orderItemEntity.getProductId())))
                         .price(new Money(orderItemEntity.getPrice()))
                         .quantity(orderItemEntity.getQuantity())
                         .subTotal(new Money(orderItemEntity.getSubTotal()))
-                        .build()).collect(Collectors.toList());
+                        .build())
+            .collect(Collectors.toList());
     }
 
     private StreetAddress addressEntityToDeliveryAddress(OrderAddressEntity address) {
@@ -74,7 +76,9 @@ public class OrderDataAccessMapper {
     }
 
     private List<OrderItemEntity> orderItemsToOrderItemsEntity(List<OrderItem> items) {
-        return items.stream().map(orderItem ->
+        return
+            items.stream()
+            .map(orderItem ->
                 OrderItemEntity.builder()
                         .id(orderItem.getId().getValue())
                         .productId(orderItem.getProduct().getId().getValue())

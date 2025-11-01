@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
- * Implementation of the application OrderApplicationService, but
+ * Implementation of the input port application OrderApplicationService, but
  * remain restricted, as it only exposes the interface, not the details of the implementation
  */
 @Slf4j

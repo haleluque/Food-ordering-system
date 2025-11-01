@@ -12,7 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//Required for multi colum primary id
+//Required for multi colum primary keys
 @IdClass(OrderItemEntityId.class)
 @Table(name = "order_items")
 @Entity
