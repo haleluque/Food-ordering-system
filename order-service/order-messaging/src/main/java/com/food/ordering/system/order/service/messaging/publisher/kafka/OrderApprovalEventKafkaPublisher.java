@@ -1,6 +1,5 @@
 package com.food.ordering.system.order.service.messaging.publisher.kafka;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel;
 import com.food.ordering.system.kafka.producer.KafkaMessageHelper;
 import com.food.ordering.system.kafka.producer.service.KafkaProducer;
@@ -15,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Implementation of the output port 'RestaurantApprovalRequestMessagePublisher' that publishes messages to kafka topics
+ */
 @Slf4j
 @Component
 public class OrderApprovalEventKafkaPublisher implements RestaurantApprovalRequestMessagePublisher {
@@ -54,10 +56,12 @@ public class OrderApprovalEventKafkaPublisher implements RestaurantApprovalReque
                             .orderApprovalEventToRestaurantApprovalRequestAvroModel(sagaId,
                                     orderApprovalEventPayload);
 
-            kafkaProducer.send(orderServiceConfigData.getRestaurantApprovalRequestTopicName(),
+            kafkaProducer.send(
+                    orderServiceConfigData.getRestaurantApprovalRequestTopicName(),
                     sagaId,
                     restaurantApprovalRequestAvroModel,
-                    kafkaMessageHelper.getKafkaCallback(orderServiceConfigData.getRestaurantApprovalRequestTopicName(),
+                    kafkaMessageHelper.getKafkaCallback(
+                            orderServiceConfigData.getRestaurantApprovalRequestTopicName(),
                             restaurantApprovalRequestAvroModel,
                             orderApprovalOutboxMessage,
                             outboxCallback,

@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Implementation of the output port 'PaymentRequestMessagePublisher' that publishes messages to kafka topics
+ */
 @Slf4j
 @Component
 public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePublisher {
@@ -56,10 +59,12 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
             PaymentRequestAvroModel paymentRequestAvroModel = orderMessagingDataMapper
                     .orderPaymentEventToPaymentRequestAvroModel(sagaId, orderPaymentEventPayload);
 
-            kafkaProducer.send(orderServiceConfigData.getPaymentRequestTopicName(),
+            kafkaProducer.send(
+                    orderServiceConfigData.getPaymentRequestTopicName(),
                     sagaId,
                     paymentRequestAvroModel,
-                    kafkaMessageHelper.getKafkaCallback(orderServiceConfigData.getPaymentRequestTopicName(),
+                    kafkaMessageHelper.getKafkaCallback(
+                            orderServiceConfigData.getPaymentRequestTopicName(),
                             paymentRequestAvroModel,
                             orderPaymentOutboxMessage,
                             outboxCallback,

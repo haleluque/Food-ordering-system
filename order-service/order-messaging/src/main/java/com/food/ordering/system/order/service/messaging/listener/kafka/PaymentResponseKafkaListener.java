@@ -16,9 +16,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Kafka listener class that will be the consumer that will:
+ * - Listen to the kafka topics coming from the payment service
+ * - Execute the logic inside the input port's adapters that are in the order-application service layer
+ */
 @Slf4j
 @Component
 public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentResponseAvroModel> {
+
+    //Port
     private final PaymentResponseMessageListener paymentResponseMessageListener;
     private final OrderMessagingDataMapper orderMessagingDataMapper;
 
@@ -61,6 +68,5 @@ public class PaymentResponseKafkaListener implements KafkaConsumer<PaymentRespon
                 log.error("No order found for order id: {}", paymentResponseAvroModel.getOrderId());
             }
         });
-
     }
 }

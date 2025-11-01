@@ -18,9 +18,16 @@ import java.util.List;
 
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
 
+/**
+ * Kafka listener class that will be the consumer that will:
+ * - Listen to the kafka topics coming from the restaurant service
+ * - Execute the logic inside the input port's adapters that are in the order-application service layer
+ */
 @Slf4j
 @Component
 public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<RestaurantApprovalResponseAvroModel> {
+
+    //Port
     private final RestaurantApprovalResponseMessageListener restaurantApprovalResponseMessageListener;
     private final OrderMessagingDataMapper orderMessagingDataMapper;
 
