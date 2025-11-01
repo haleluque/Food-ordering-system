@@ -51,6 +51,9 @@ public class GlobalExceptionHandler {
         return errorDTO;
     }
 
+    /**
+     * Methods that collects all constrain validations into a single string
+     */
     private String extractViolationsFromException(ConstraintViolationException validationException) {
         return validationException.getConstraintViolations()
                 .stream()

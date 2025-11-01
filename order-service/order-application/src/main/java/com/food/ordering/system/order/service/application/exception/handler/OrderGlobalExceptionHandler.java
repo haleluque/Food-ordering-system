@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Global Exception controller class
+ */
 @Slf4j
 @ControllerAdvice
 public class OrderGlobalExceptionHandler extends GlobalExceptionHandler {
+
     @ResponseBody
     @ExceptionHandler(value = {OrderDomainException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
