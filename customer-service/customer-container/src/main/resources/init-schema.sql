@@ -14,7 +14,7 @@ CREATE TABLE customer.customers
 );
 
 DROP MATERIALIZED VIEW IF EXISTS customer.order_customer_m_view;
-
+--Materialized view for customer
 CREATE MATERIALIZED VIEW customer.order_customer_m_view
 TABLESPACE pg_default
 AS
@@ -29,6 +29,7 @@ refresh materialized VIEW customer.order_customer_m_view;
 
 DROP function IF EXISTS customer.refresh_order_customer_m_view;
 
+--TRIGGER function to refresh the materialized view when changes are detected over customer table
 CREATE OR replace function customer.refresh_order_customer_m_view()
 returns trigger
 AS '
