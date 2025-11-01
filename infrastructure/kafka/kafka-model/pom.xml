@@ -19,8 +19,8 @@
         </dependency>
     </dependencies>
 
-    <!-- plugin to create the avro schema java classes from the avro schema files
-    when running Maven install-->
+    <!-- plugin to create the avro schema java classes automatically from the avro schema files
+    when running 'Maven install'-->
     <build>
         <plugins>
             <plugin>

@@ -16,9 +16,10 @@ import java.util.function.BiConsumer;
 
 /**
  * The generic types allow it to be used from any service with any avro model, as a generic class
- *
- * @param <K>
- * @param <V>
+ * SpecificRecordBase is the abstract base class of Avro type
+ * It generates the kafka producer configuration, injects the params from
+ * - kafka config data
+ * - kafka producer config data
  */
 @Slf4j
 @Component
@@ -30,6 +31,15 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
         this.kafkaTemplate = kafkaTemplate;
     }
 
+    /**
+     * Method that sends messages to a kafka topic using 'Kafka template'
+     * As kafka will not return a result immediately, we use a CompletableFuture to handle
+     * the callback method from kafka response
+     * @param topicName
+     * @param key
+     * @param message
+     * @param callback
+     */
     @Override
     public void send(String topicName, K key, V message, BiConsumer<SendResult<K, V>, Throwable> callback) {
         log.info("Sending message={} to topic={}", message, topicName);
@@ -43,6 +53,10 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
         }
     }
 
+    /**
+     * Clean-up method:
+     * It will be called when the application is shutting down, thanks to the 'PreDestroy' annotation
+     */
     @PreDestroy
     public void close() {
         if (kafkaTemplate != null) {

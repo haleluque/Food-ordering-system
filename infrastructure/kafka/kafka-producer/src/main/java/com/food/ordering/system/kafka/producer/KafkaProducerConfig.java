@@ -17,9 +17,12 @@ import java.util.Map;
 
 /**
  * SpecificRecordBase is the abstract base class of Avro type
+ * It generates the kafka producer configuration, injects the params from
+ * - kafka config data
+ * - kafka producer config data
  *
- * @param <K>
- * @param <V>
+ * @param <K> key
+ * @param <V> value, type of 'SpecificRecordBase' which is the abstract base class of avro type
  */
 @Configuration
 public class KafkaProducerConfig<K extends Serializable, V extends SpecificRecordBase> {
@@ -32,6 +35,10 @@ public class KafkaProducerConfig<K extends Serializable, V extends SpecificRecor
         this.kafkaProducerConfigData = kafkaProducerConfigData;
     }
 
+    /**
+     * Maps the kafka producer information into a map
+     * @return Map with the producer config info
+     */
     @Bean
     public Map<String, Object> producerConfig() {
         Map<String, Object> props = new HashMap<>();
@@ -49,13 +56,18 @@ public class KafkaProducerConfig<K extends Serializable, V extends SpecificRecor
         return props;
     }
 
+    /**
+     * Produces a ProducerFactory with the producer configuration map
+     * @return ProducerFactory
+     */
     @Bean
     public ProducerFactory<K, V> producerFactory() {
         return new DefaultKafkaProducerFactory<>(producerConfig());
     }
 
     /**
-     * This method will be used to send data to the kafka cluster
+     * This method will be used to send data, using the kafka template, to the kafka brokers
+     * KafkaTemplate: Its a wrapper class to send data to the kafka cluster
      */
     @Bean
     public KafkaTemplate<K, V> kafkaTemplate() {

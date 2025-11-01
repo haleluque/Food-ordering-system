@@ -16,34 +16,34 @@ If error encountered, and the 'volumes/kafka' and 'volumes/zookeeper' folders ha
 
 ### 🐘 Run Zookeeper
 ```bash
-docker-compose -f common.yml -f zookeeper.yml up
+  docker-compose -f common.yml -f zookeeper.yml up
 ```
 
 ### ⏹️ Stop Zookeeper
 ```bash
-docker-compose -f common.yml -f zookeeper.yml down
+  docker-compose -f common.yml -f zookeeper.yml down
 ```
 
 ### 🧱 Run Kafka Cluster
 ```bash
-docker-compose -f common.yml -f kafka_cluster.yml up
+  docker-compose -f common.yml -f kafka_cluster.yml up
 ```
 
 ### ⏹️ Stop Kafka Cluster
 ```bash
-docker-compose -f common.yml -f kafka_cluster.yml down
+  docker-compose -f common.yml -f kafka_cluster.yml down
 ```
 
 ### 🔁 Initialize Kafka Topics
 ```bash
-docker-compose -f common.yml -f init_kafka.yml up --force-recreate
+  docker-compose -f common.yml -f init_kafka.yml up --force-recreate
 ```
 
 ---
 
 ## ❤️ Zookeeper Health Check
 ```bash
-echo ruok | ncat localhost 2181
+  echo ruok | ncat localhost 2181
 ```
 
 ---
@@ -63,12 +63,12 @@ Register the cluster manually:
 
 ### Terminal 1 – Listen
 ```bash
-ncat -l 9999
+  ncat -l 9999
 ```
 
 ### Terminal 2 – Connect
 ```bash
-ncat localhost 9999
+  ncat localhost 9999
 ```
 
 Type a message in one terminal and press Enter — it will appear in the other.
@@ -79,12 +79,12 @@ Type a message in one terminal and press Enter — it will appear in the other.
 
 ### ▶️ Install Helm Chart
 ```bash
-helm install local-confluent-kafka helm/cp-helm-charts --version 0.6.0
+  helm install local-confluent-kafka helm/cp-helm-charts --version 0.6.0
 ```
 
 ### ❌ Uninstall Helm Chart
 ```bash
-helm uninstall local-confluent-kafka
+  helm uninstall local-confluent-kafka
 ```
 
 ---
@@ -93,7 +93,7 @@ helm uninstall local-confluent-kafka
 
 ### 🔍 Check for Food Ordering System Images
 ```bash
-docker images | findstr food.ordering.system
+  docker images | findstr food.ordering.system
 ```
 
 ---
@@ -102,32 +102,32 @@ docker images | findstr food.ordering.system
 
 ### 🔍 List All Pods
 ```bash
-kubectl get pods
+  kubectl get pods
 ```
 
 ### 📦 Create Kafka Client Pod
 ```bash
-kubectl apply -f kafka-client.yml
+  kubectl apply -f kafka-client.yml
 ```
 
 ### 🖥️ Enter Kafka Client Pod
 ```bash
-kubectl exec -it kafka-client -- /bin/bash
+  kubectl exec -it kafka-client -- /bin/bash
 ```
 
 ### 🚀 Deploy Application
 ```bash
-kubectl apply -f application-deployment-local.yaml
+  kubectl apply -f application-deployment-local.yaml
 ```
 
 ### 📄 View Logs
 ```bash
-kubectl logs <container_name>
+  kubectl logs <container_name>
 ```
 
 ### ❌ Delete Kafka Client Pod
 ```bash
-kubectl delete -f kafka-client.yml
+  kubectl delete -f kafka-client.yml
 ```
 
 ---
@@ -136,9 +136,17 @@ kubectl delete -f kafka-client.yml
 
 ### 📜 List All Topics
 ```bash
-kafka-topics --zookeeper local-confluent-kafka-cp-zookeeper-headless:2181 --list
+  kafka-topics --zookeeper local-confluent-kafka-cp-zookeeper-headless:2181 --list
 ```
 
-### ➕ Create Topics
+### ➕ Create Topics if don't exist
 ```bash
-kafka-top
+    kafka-topics --zookeeper local-confluent-kafka-cp-zookeeper-headless:2181 --topic customer  --create --partitions 3 --replication-factor 3 --if-not-exists
+    
+    kafka-topics --zookeeper local-confluent-kafka-cp-zookeeper-headless:2181 --topic payment-request --create --partitions 3 --replication-factor 3 --if-not-exists
+    
+    kafka-topics --zookeeper local-confluent-kafka-cp-zookeeper-headless:2181 --topic payment-response --create --partitions 3 --replication-factor 3 --if-not-exists
+    
+    kafka-topics --zookeeper local-confluent-kafka-cp-zookeeper-headless:2181 --topic restaurant-approval-request --create --partitions 3 --replication-factor 3 --if-not-exists
+```
+

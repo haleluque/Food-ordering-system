@@ -5,6 +5,15 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Class designed to map Kafka configuration properties from the different application.properties
+ * found on the following modules:
+ * - customer-container
+ * - order-container
+ * - restaurant-container
+ * - payment-container
+ * It maps them into a structured java object, using the prefix 'kafka-consumer-config'
+ */
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "kafka-consumer-config")

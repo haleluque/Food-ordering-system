@@ -16,6 +16,13 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  It generates the kafka consumer configuration, injects the params from
+ *  - kafka config data
+ *  - kafka consumer config data
+ * @param <K> key
+ * @param <V> value, type of 'SpecificRecordBase' which is the abstract base class of avro type
+ */
 @Configuration
 public class KafkaConsumerConfig<K extends Serializable, V extends SpecificRecordBase> {
     private final KafkaConfigData kafkaConfigData;
@@ -26,6 +33,10 @@ public class KafkaConsumerConfig<K extends Serializable, V extends SpecificRecor
         this.kafkaConsumerConfigData = kafkaConsumerConfigData;
     }
 
+    /**
+     * Maps the kafka consumer information into a map
+     * @return Map with the producer config info
+     */
     @Bean
     public Map<String, Object> consumerConfigs() {
         Map<String, Object> props = new HashMap<>();
@@ -45,11 +56,19 @@ public class KafkaConsumerConfig<K extends Serializable, V extends SpecificRecor
         return props;
     }
 
+    /**
+     * Produces a ConsumerFactory with the consumer configuration map
+     * @return ConsumerFactory
+     */
     @Bean
     public ConsumerFactory<K, V> consumerFactory() {
         return new DefaultKafkaConsumerFactory<>(consumerConfigs());
     }
 
+    /**
+     * Produces a KafkaListenerContainerFactory from the config data and the ConsumerFactory object
+     * @return KafkaListenerContainerFactory
+     */
     @Bean
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<K, V>> kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<K, V> factory = new ConcurrentKafkaListenerContainerFactory<>();
