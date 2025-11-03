@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class PaymentRepositoryImpl implements PaymentRepository {
 

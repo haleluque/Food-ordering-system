@@ -5,6 +5,10 @@ import com.food.ordering.system.domain.valueobject.CustomerId;
 import com.food.ordering.system.domain.valueobject.Money;
 import com.food.ordering.system.payment.service.domain.valueobject.CreditEntryId;
 
+/**
+ * Treated as separated entities form 'Payment', that's the reason they are not marked as
+ * aggregate root, thus they extend from 'BaseEntity' instead
+ */
 public class CreditEntry extends BaseEntity<CreditEntryId> {
 
     private final CustomerId customerId;
@@ -18,6 +22,7 @@ public class CreditEntry extends BaseEntity<CreditEntryId> {
         totalCreditAmount = totalCreditAmount.subtract(amount);
     }
 
+    //only through builder can this entity be instantiated
     private CreditEntry(Builder builder) {
         setId(builder.creditEntryId);
         customerId = builder.customerId;
@@ -28,7 +33,6 @@ public class CreditEntry extends BaseEntity<CreditEntryId> {
         return new Builder();
     }
 
-
     public CustomerId getCustomerId() {
         return customerId;
     }
@@ -37,6 +41,8 @@ public class CreditEntry extends BaseEntity<CreditEntryId> {
         return totalCreditAmount;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private CreditEntryId creditEntryId;
         private CustomerId customerId;

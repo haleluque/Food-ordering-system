@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class CreditEntryRepositoryImpl implements CreditEntryRepository {
 

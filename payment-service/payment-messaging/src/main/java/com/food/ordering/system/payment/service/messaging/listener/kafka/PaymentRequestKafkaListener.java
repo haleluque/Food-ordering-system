@@ -19,6 +19,11 @@ import org.springframework.stereotype.Component;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Kafka listener class that will be the consumer that will:
+ * - Listen to the kafka topics coming from the payment service
+ * - Execute the logic inside the input port's adapters that are in the payment-application service layer
+ */
 @Slf4j
 @Component
 public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequestAvroModel> {

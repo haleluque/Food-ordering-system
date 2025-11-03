@@ -25,5 +25,4 @@ public class CreditEntryDataAccessMapper {
                 .totalCreditAmount(creditEntry.getTotalCreditAmount().getAmount())
                 .build();
     }
-
 }

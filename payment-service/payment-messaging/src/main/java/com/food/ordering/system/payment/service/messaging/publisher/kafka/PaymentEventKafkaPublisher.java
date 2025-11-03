@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Implementation of the output port 'PaymentResponseMessagePublisher' that publishes messages to kafka topics
+ */
 @Slf4j
 @Component
 public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublisher {

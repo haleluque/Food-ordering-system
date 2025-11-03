@@ -56,8 +56,7 @@ public class PaymentRequestHelper {
     @Transactional
     public void persistPayment(PaymentRequest paymentRequest) {
         if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.COMPLETED)) {
-            log.info("An outbox message with saga id: {} is already saved to database!",
-                    paymentRequest.getSagaId());
+            outboxMessageDuplicatedLog(paymentRequest);
             return;
         }
 
@@ -79,8 +78,7 @@ public class PaymentRequestHelper {
     @Transactional
     public void persistCancelPayment(PaymentRequest paymentRequest) {
         if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.CANCELLED)) {
-            log.info("An outbox message with saga id: {} is already saved to database!",
-                    paymentRequest.getSagaId());
+            outboxMessageDuplicatedLog(paymentRequest);
             return;
         }
 
@@ -104,7 +102,6 @@ public class PaymentRequestHelper {
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentRequest.getSagaId()));
-
     }
 
     private CreditEntry getCreditEntry(CustomerId customerId) {
@@ -151,4 +148,8 @@ public class PaymentRequestHelper {
         return false;
     }
 
+    private void outboxMessageDuplicatedLog(PaymentRequest paymentRequest) {
+        log.info("An outbox message with saga id: {} is already saved to database!",
+                paymentRequest.getSagaId());
+    }
 }

@@ -36,6 +36,7 @@ public class Payment extends AggregateRoot<PaymentId> {
         this.paymentStatus = paymentStatus;
     }
 
+    //only through builder can this entity be instantiated
     private Payment(Builder builder) {
         setId(builder.paymentId);
         orderId = builder.orderId;
@@ -48,7 +49,6 @@ public class Payment extends AggregateRoot<PaymentId> {
     public static Builder builder() {
         return new Builder();
     }
-
 
     public OrderId getOrderId() {
         return orderId;
@@ -70,6 +70,8 @@ public class Payment extends AggregateRoot<PaymentId> {
         return createdAt;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private PaymentId paymentId;
         private OrderId orderId;

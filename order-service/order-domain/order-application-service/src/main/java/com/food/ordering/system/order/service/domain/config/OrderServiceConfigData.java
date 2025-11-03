@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * Class designed to map Kafka configuration properties from application.yaml in the order-container module
- * It maps them into a structured java object, using the prefix 'kafka-config'
+ * It maps them into a structured java object, using the prefix 'order-service'
  */
 @Data
 @Configuration

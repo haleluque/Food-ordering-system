@@ -6,6 +6,7 @@ import com.food.ordering.system.payment.service.domain.entity.Payment;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+//It is abstract as it will serve as the base event class
 public abstract class PaymentEvent implements DomainEvent<Payment> {
 
     private final Payment payment;

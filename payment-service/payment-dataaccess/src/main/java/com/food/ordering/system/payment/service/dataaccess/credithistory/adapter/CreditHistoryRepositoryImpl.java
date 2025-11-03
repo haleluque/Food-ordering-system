@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class CreditHistoryRepositoryImpl implements CreditHistoryRepository {
 

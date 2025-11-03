@@ -20,9 +20,13 @@ import java.util.UUID;
 
 import static com.food.ordering.system.domain.DomainConstants.UTC;
 
+/**
+ * This class works as an Application service class
+ */
 @Slf4j
 public class PaymentDomainServiceImpl implements PaymentDomainService {
 
+    //Use multiple aggregates to check business requirements
     @Override
     public PaymentEvent validateAndInitiatePayment(Payment payment,
                                                    CreditEntry creditEntry,
@@ -55,15 +59,15 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
         addCreditEntry(payment, creditEntry);
         updateCreditHistory(payment, creditHistories, TransactionType.CREDIT);
 
-       if (failureMessages.isEmpty()) {
-           log.info("Payment is cancelled for order id: {}", payment.getOrderId().getValue());
-           payment.updateStatus(PaymentStatus.CANCELLED);
-           return new PaymentCancelledEvent(payment, ZonedDateTime.now(ZoneId.of(UTC)));
-       } else {
-           log.info("Payment cancellation is failed for order id: {}", payment.getOrderId().getValue());
-           payment.updateStatus(PaymentStatus.FAILED);
-           return new PaymentFailedEvent(payment, ZonedDateTime.now(ZoneId.of(UTC)), failureMessages);
-       }
+        if (failureMessages.isEmpty()) {
+            log.info("Payment is cancelled for order id: {}", payment.getOrderId().getValue());
+            payment.updateStatus(PaymentStatus.CANCELLED);
+            return new PaymentCancelledEvent(payment, ZonedDateTime.now(ZoneId.of(UTC)));
+        } else {
+            log.info("Payment cancellation is failed for order id: {}", payment.getOrderId().getValue());
+            payment.updateStatus(PaymentStatus.FAILED);
+            return new PaymentFailedEvent(payment, ZonedDateTime.now(ZoneId.of(UTC)), failureMessages);
+        }
     }
 
     private void validateCreditEntry(Payment payment, CreditEntry creditEntry, List<String> failureMessages) {
@@ -90,26 +94,25 @@ public class PaymentDomainServiceImpl implements PaymentDomainService {
                 .build());
     }
 
-
     private void validateCreditHistory(CreditEntry creditEntry,
                                        List<CreditHistory> creditHistories,
                                        List<String> failureMessages) {
-            Money totalCreditHistory = getTotalHistoryAmount(creditHistories, TransactionType.CREDIT);
-            Money totalDebitHistory = getTotalHistoryAmount(creditHistories, TransactionType.DEBIT);
+        Money totalCreditHistory = getTotalHistoryAmount(creditHistories, TransactionType.CREDIT);
+        Money totalDebitHistory = getTotalHistoryAmount(creditHistories, TransactionType.DEBIT);
 
-            if (totalDebitHistory.isGreaterThan(totalCreditHistory)) {
-                log.error("Customer with id: {} doesn't have enough credit according to credit history",
-                        creditEntry.getCustomerId().getValue());
-                failureMessages.add("Customer with id=" + creditEntry.getCustomerId().getValue() +
-                        " doesn't have enough credit according to credit history!");
-            }
+        if (totalDebitHistory.isGreaterThan(totalCreditHistory)) {
+            log.error("Customer with id: {} doesn't have enough credit according to credit history",
+                    creditEntry.getCustomerId().getValue());
+            failureMessages.add("Customer with id=" + creditEntry.getCustomerId().getValue() +
+                    " doesn't have enough credit according to credit history!");
+        }
 
-            if (!creditEntry.getTotalCreditAmount().equals(totalCreditHistory.subtract(totalDebitHistory))) {
-                log.error("Credit history total is not equal to current credit for customer id: {}!",
-                        creditEntry.getCustomerId().getValue());
-                failureMessages.add("Credit history total is not equal to current credit for customer id: {}" +
-                        creditEntry.getCustomerId().getValue() + "!");
-            }
+        if (!creditEntry.getTotalCreditAmount().equals(totalCreditHistory.subtract(totalDebitHistory))) {
+            log.error("Credit history total is not equal to current credit for customer id: {}!",
+                    creditEntry.getCustomerId().getValue());
+            failureMessages.add("Credit history total is not equal to current credit for customer id: {}" +
+                    creditEntry.getCustomerId().getValue() + "!");
+        }
     }
 
     private Money getTotalHistoryAmount(List<CreditHistory> creditHistories, TransactionType transactionType) {
