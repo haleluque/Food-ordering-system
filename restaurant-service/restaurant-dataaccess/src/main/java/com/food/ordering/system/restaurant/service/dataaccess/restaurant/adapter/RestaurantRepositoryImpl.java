@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class RestaurantRepositoryImpl implements RestaurantRepository {
 

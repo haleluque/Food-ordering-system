@@ -42,6 +42,8 @@
                     <image>
                         <name>${project.groupId}/restaurant.service:${project.version}</name>
                     </image>
+                    <!-- clean cache, avoids image id error-->
+                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

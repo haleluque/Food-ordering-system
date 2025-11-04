@@ -32,8 +32,6 @@ public class RestaurantApprovalRequestHelper {
     private final OrderOutboxHelper orderOutboxHelper;
     private final RestaurantApprovalResponseMessagePublisher restaurantApprovalResponseMessagePublisher;
 
-
-
     public RestaurantApprovalRequestHelper(RestaurantDomainService restaurantDomainService,
                                            RestaurantDataMapper restaurantDataMapper,
                                            RestaurantRepository restaurantRepository,

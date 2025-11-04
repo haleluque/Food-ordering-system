@@ -63,6 +63,7 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
                     orderServiceConfigData.getPaymentRequestTopicName(),
                     sagaId,
                     paymentRequestAvroModel,
+                    //executed when getting a response from the kafka cluster
                     kafkaMessageHelper.getKafkaCallback(
                             orderServiceConfigData.getPaymentRequestTopicName(),
                             paymentRequestAvroModel,

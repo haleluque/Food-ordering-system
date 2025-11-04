@@ -14,6 +14,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Implementation of the output port 'RestaurantApprovalResponseMessagePublisher' that publishes messages to kafka topics
+ */
 @Slf4j
 @Component
 public class RestaurantApprovalEventKafkaPublisher implements RestaurantApprovalResponseMessagePublisher {
@@ -34,7 +37,6 @@ public class RestaurantApprovalEventKafkaPublisher implements RestaurantApproval
         this.kafkaMessageHelper = kafkaMessageHelper;
     }
 
-
     @Override
     public void publish(OrderOutboxMessage orderOutboxMessage,
                         BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback) {
@@ -52,10 +54,13 @@ public class RestaurantApprovalEventKafkaPublisher implements RestaurantApproval
                     restaurantMessagingDataMapper
                             .orderEventPayloadToRestaurantApprovalResponseAvroModel(sagaId, orderEventPayload);
 
-            kafkaProducer.send(restaurantServiceConfigData.getRestaurantApprovalResponseTopicName(),
+            kafkaProducer.send(
+                    restaurantServiceConfigData.getRestaurantApprovalResponseTopicName(),
                     sagaId,
                     restaurantApprovalResponseAvroModel,
-                    kafkaMessageHelper.getKafkaCallback(restaurantServiceConfigData
+                    //executed when getting a response from the kafka cluster
+                    kafkaMessageHelper.getKafkaCallback(
+                            restaurantServiceConfigData
                                     .getRestaurantApprovalResponseTopicName(),
                             restaurantApprovalResponseAvroModel,
                             orderOutboxMessage,
@@ -71,5 +76,4 @@ public class RestaurantApprovalEventKafkaPublisher implements RestaurantApproval
                     orderEventPayload.getOrderId(), sagaId, e.getMessage());
         }
     }
-
 }

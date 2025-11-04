@@ -60,6 +60,7 @@ public class OrderApprovalEventKafkaPublisher implements RestaurantApprovalReque
                     orderServiceConfigData.getRestaurantApprovalRequestTopicName(),
                     sagaId,
                     restaurantApprovalRequestAvroModel,
+                    //executed when getting a response from the kafka cluster
                     kafkaMessageHelper.getKafkaCallback(
                             orderServiceConfigData.getRestaurantApprovalRequestTopicName(),
                             restaurantApprovalRequestAvroModel,

@@ -7,6 +7,7 @@ import com.food.ordering.system.restaurant.service.domain.entity.OrderApproval;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+//It is abstract as it will serve as the base event class
 public abstract class OrderApprovalEvent implements DomainEvent<OrderApproval> {
     private final OrderApproval orderApproval;
     private final RestaurantId restaurantId;

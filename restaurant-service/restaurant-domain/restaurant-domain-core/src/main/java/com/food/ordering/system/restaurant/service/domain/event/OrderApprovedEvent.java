@@ -1,6 +1,5 @@
 package com.food.ordering.system.restaurant.service.domain.event;
 
-import com.food.ordering.system.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.domain.valueobject.RestaurantId;
 import com.food.ordering.system.restaurant.service.domain.entity.OrderApproval;
 
@@ -15,5 +14,4 @@ public class OrderApprovedEvent extends OrderApprovalEvent {
                               ZonedDateTime createdAt) {
         super(orderApproval, restaurantId, failureMessages, createdAt);
     }
-
 }

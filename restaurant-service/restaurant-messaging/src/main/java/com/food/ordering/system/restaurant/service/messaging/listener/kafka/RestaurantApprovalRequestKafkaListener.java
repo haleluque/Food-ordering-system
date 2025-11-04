@@ -18,6 +18,11 @@ import org.springframework.stereotype.Component;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Kafka listener class that will be the consumer that will:
+ * - Listen to the kafka topics coming from the order service
+ * - Execute the logic inside the input port's adapters that are in the restaurant-application service layer
+ */
 @Slf4j
 @Component
 public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<RestaurantApprovalRequestAvroModel> {
@@ -50,8 +55,9 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
         messages.forEach(restaurantApprovalRequestAvroModel -> {
             try {
                 log.info("Processing order approval for order id: {}", restaurantApprovalRequestAvroModel.getOrderId());
-                restaurantApprovalRequestMessageListener.approveOrder(restaurantMessagingDataMapper.
-                        restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
+                restaurantApprovalRequestMessageListener.approveOrder(
+                        restaurantMessagingDataMapper.
+                            restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
             } catch (DataAccessException e) {
                 SQLException sqlException = (SQLException) e.getRootCause();
                 if (sqlException != null && sqlException.getSQLState() != null &&
@@ -72,5 +78,4 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
             }
         });
     }
-
 }

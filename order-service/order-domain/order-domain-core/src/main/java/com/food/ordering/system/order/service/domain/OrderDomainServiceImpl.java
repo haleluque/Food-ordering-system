@@ -69,8 +69,13 @@ public class OrderDomainServiceImpl implements OrderDomainService {
 
     private void setOrderProductInformation(Order order, Restaurant restaurant) {
         //the product is the key and the value
+        //In order to avoid a IllegalStateException, we provide a merge function
         Map<Product, Product> productLookup = restaurant.getProducts().stream()
-                .collect(Collectors.toMap(p -> p, p -> p));
+                .collect(Collectors.toMap(
+                        p -> p,
+                        p -> p,
+                        (existing, replacement) -> replacement
+                ));
 
         order.getItems().forEach(orderItem -> {
             Product currentProduct = orderItem.getProduct();

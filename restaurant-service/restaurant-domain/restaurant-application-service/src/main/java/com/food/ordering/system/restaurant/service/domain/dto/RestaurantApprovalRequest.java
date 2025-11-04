@@ -6,6 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
@@ -15,7 +19,7 @@ public class RestaurantApprovalRequest {
     private String restaurantId;
     private String orderId;
     private RestaurantOrderStatus restaurantOrderStatus;
-    private java.util.List<Product> products;
-    private java.math.BigDecimal price;
-    private java.time.Instant createdAt;
+    private List<Product> products;
+    private BigDecimal price;
+    private Instant createdAt;
 }

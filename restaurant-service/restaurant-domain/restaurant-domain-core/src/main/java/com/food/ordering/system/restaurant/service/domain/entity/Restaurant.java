@@ -15,6 +15,14 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
    private boolean active;
    private final OrderDetail orderDetail;
 
+    //only through builder can this entity be created
+    private Restaurant(Builder builder) {
+        setId(builder.restaurantId);
+        orderApproval = builder.orderApproval;
+        active = builder.active;
+        orderDetail = builder.orderDetail;
+    }
+
    public void validateOrder(List<String> failureMessages) {
        if (orderDetail.getOrderStatus() != OrderStatus.PAID) {
            failureMessages.add("Payment is not completed for order: " + orderDetail.getId());
@@ -45,13 +53,6 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         this.active = active;
     }
 
-    private Restaurant(Builder builder) {
-        setId(builder.restaurantId);
-        orderApproval = builder.orderApproval;
-        active = builder.active;
-        orderDetail = builder.orderDetail;
-    }
-
     public static Builder builder() {
         return new Builder();
     }
@@ -68,6 +69,8 @@ public class Restaurant extends AggregateRoot<RestaurantId> {
         return orderDetail;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private RestaurantId restaurantId;
         private OrderApproval orderApproval;

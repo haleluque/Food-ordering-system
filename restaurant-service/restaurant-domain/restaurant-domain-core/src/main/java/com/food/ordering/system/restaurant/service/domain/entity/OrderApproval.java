@@ -11,6 +11,7 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
     private final OrderId orderId;
     private final OrderApprovalStatus approvalStatus;
 
+    //only through builder can this entity be created
     private OrderApproval(Builder builder) {
         setId(builder.orderApprovalId);
         restaurantId = builder.restaurantId;
@@ -21,7 +22,6 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
     public static Builder builder() {
         return new Builder();
     }
-
 
     public RestaurantId getRestaurantId() {
         return restaurantId;
@@ -35,6 +35,8 @@ public class OrderApproval extends BaseEntity<OrderApprovalId> {
         return approvalStatus;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private OrderApprovalId orderApprovalId;
         private RestaurantId restaurantId;

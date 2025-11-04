@@ -55,6 +55,8 @@
                     <image>
                         <name>${project.groupId}/order.service:${project.version}</name>
                     </image>
+                    <!-- clean cache, avoids image id error-->
+                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

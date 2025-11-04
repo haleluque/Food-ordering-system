@@ -1,4 +1,4 @@
-# Payment Service Configuration
+# Restaurant Service Configuration
 
 This document describes the configuration settings for the **Order Service** in the Food Ordering System. The service integrates with Kafka for event-driven communication, uses PostgreSQL for persistence, and is built with Spring Boot.
 
@@ -8,7 +8,7 @@ This document describes the configuration settings for the **Order Service** in 
 
 | Property | Description |
 |---------|-------------|
-| `server.port` | Port on which the service runs (default: `8182`) |
+| `server.port` | Port on which the service runs (default: `8183`) |
 
 ---
 
@@ -20,14 +20,14 @@ This document describes the configuration settings for the **Order Service** in 
 
 ---
 
-## 🧾 Payment Service Topics
+## 🧾 Restaurant Service Topics
 
 These Kafka topics are used for inter-service communication.
 
 | Property | Description |
 |---------|-------------|
-| `payment-request-topic-name` | Topic for sending payment requests |
-| `payment-response-topic-name` | Topic for receiving payment responses |
+| `restaurant-approval-request-topic-name` | Topic for sending restaurant approval requests |
+| `restaurant-approval-response-topic-name` | Topic for receiving restaurant approval responses |
 | `outbox-scheduler-fixed-rate` | Scheduler interval in milliseconds (default: `10000`) |
 | `outbox-scheduler-initial-delay` | Initial delay before scheduler starts (default: `10000`) |
 
@@ -37,9 +37,9 @@ These Kafka topics are used for inter-service communication.
 
 ### SQL Initialization
 
-| Property                           | Description                                           |
-|------------------------------------|-------------------------------------------------------|
-| `spring.sql.init.mode`             | Always initialize schema                              |
+| Property | Description |
+|---------|-------------|
+| `spring.sql.init.mode` | Always initialize schema |
 | `spring.sql.init.schema-locations` | Path to SQL schema file (`classpath:init-schema.sql`) |
 | `spring.sql.init.data`               | Path to SQL data file (`classpath:init-data.sql`)   |
 

@@ -10,18 +10,19 @@ public class Product extends BaseEntity<ProductId> {
     private final int quantity;
     private boolean available;
 
-    public void updateWithConfirmedNamePriceAndAvailability(String name, Money price, boolean available) {
-        this.name = name;
-        this.price = price;
-        this.available = available;
-    }
-
+    //only through builder can this entity be created
     private Product(Builder builder) {
         setId(builder.productId);
         name = builder.name;
         price = builder.price;
         quantity = builder.quantity;
         available = builder.available;
+    }
+
+    public void updateWithConfirmedNamePriceAndAvailability(String name, Money price, boolean available) {
+        this.name = name;
+        this.price = price;
+        this.available = available;
     }
 
     public static Builder builder() {
@@ -44,6 +45,8 @@ public class Product extends BaseEntity<ProductId> {
         return available;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private ProductId productId;
         private String name;

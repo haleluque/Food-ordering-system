@@ -6,6 +6,9 @@ import com.food.ordering.system.restaurant.service.domain.entity.OrderApproval;
 import com.food.ordering.system.restaurant.service.domain.ports.output.repository.OrderApprovalRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
 @Component
 public class OrderApprovalRepositoryImpl implements OrderApprovalRepository {
 
@@ -24,5 +27,4 @@ public class OrderApprovalRepositoryImpl implements OrderApprovalRepository {
                 .orderApprovalEntityToOrderApproval(orderApprovalJpaRepository
                         .save(restaurantDataAccessMapper.orderApprovalToOrderApprovalEntity(orderApproval)));
     }
-
 }

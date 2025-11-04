@@ -12,6 +12,7 @@ public class OrderDetail extends BaseEntity<OrderId> {
     private Money totalAmount;
     private final List<Product> products;
 
+    //only through builder can this entity be created
     private OrderDetail(Builder builder) {
         setId(builder.orderId);
         orderStatus = builder.orderStatus;
@@ -22,7 +23,6 @@ public class OrderDetail extends BaseEntity<OrderId> {
     public static Builder builder() {
         return new Builder();
     }
-
 
     public OrderStatus getOrderStatus() {
         return orderStatus;
@@ -36,6 +36,8 @@ public class OrderDetail extends BaseEntity<OrderId> {
         return products;
     }
 
+    //Built by "InnerBuilder" Intellij plug-in
+    //not used Lombok to keep the value object clean from external frameworks
     public static final class Builder {
         private OrderId orderId;
         private OrderStatus orderStatus;

@@ -55,6 +55,7 @@ public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublish
             kafkaProducer.send(paymentServiceConfigData.getPaymentResponseTopicName(),
                     sagaId,
                     paymentResponseAvroModel,
+                    //executed when getting a response from the kafka cluster
                     kafkaMessageHelper.getKafkaCallback(paymentServiceConfigData.getPaymentResponseTopicName(),
                             paymentResponseAvroModel,
                             orderOutboxMessage,
