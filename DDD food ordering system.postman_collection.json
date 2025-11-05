@@ -1,0 +1,86 @@
+{
+	"info": {
+		"_postman_id": "1e962899-84c9-466d-8e97-296b0053c880",
+		"name": "DDD food ordering system",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "360455"
+	},
+	"item": [
+		{
+			"name": "Create Order",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb41\",\r\n  \"restaurantId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb45\",\r\n  \"address\": {\r\n    \"street\": \"street_1\",\r\n    \"postalCode\": \"1000AB\",\r\n    \"city\": \"Amsterdam\"\r\n  },\r\n  \"price\": 200.00,\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb48\",\r\n      \"quantity\": 1,\r\n      \"price\": 50.00,\r\n      \"subTotal\": 50.00\r\n    },\r\n    {\r\n      \"productId\": \"d215b5f8-0249-4dc5-89a3-51fd148cfb48\",\r\n      \"quantity\": 3,\r\n      \"price\": 50.00,\r\n      \"subTotal\": 150.00\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8181/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Order By Tracking Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/orders/db742958-d762-41b3-b231-b80f1edb7c04",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"orders",
+						"db742958-d762-41b3-b231-b80f1edb7c04"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create customers",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\":\"d215b5f8-0249-4dc5-89a3-51fd148cfb41\",\r\n    \"username\": \"user_1\",\r\n    \"firstName\": \"First\",\r\n    \"lastName\": \"User\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8184/customers",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8184",
+					"path": [
+						"customers"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
