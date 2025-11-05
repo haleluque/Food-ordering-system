@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.domain;
+package com.food.ordering.system.order.service.domain.saga.coordinator;
 
 import com.food.ordering.system.domain.valueobject.OrderId;
 import com.food.ordering.system.domain.valueobject.OrderStatus;
@@ -12,6 +12,12 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Order Service will be the 'SAGA' coordinator, so it will have all SAGA management classes
+ * - OrderPaymentSaga
+ * - OrderApprovalSaga
+ * - OrderSagaHelper
+ */
 @Slf4j
 @Component
 public class OrderSagaHelper {
@@ -34,7 +40,7 @@ public class OrderSagaHelper {
         orderRepository.save(order);
     }
 
-    SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
+    public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
         switch (orderStatus) {
             case PAID:
                 return SagaStatus.PROCESSING;
