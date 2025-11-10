@@ -14,11 +14,14 @@ public interface PaymentOutboxRepository {
 
     Optional<List<OrderPaymentOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatus(String type,
                                                                                      OutboxStatus outboxStatus,
+                                                                                     //varArgs param
                                                                                      SagaStatus... sagaStatus);
     Optional<OrderPaymentOutboxMessage> findByTypeAndSagaIdAndSagaStatus(String type,
                                                                          UUID sagaId,
+                                                                         //varArgs param
                                                                          SagaStatus... sagaStatus);
     void deleteByTypeAndOutboxStatusAndSagaStatus(String type,
                                                   OutboxStatus outboxStatus,
+                                                  //varArgs param
                                                   SagaStatus... sagaStatus);
 }

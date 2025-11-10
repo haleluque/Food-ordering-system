@@ -14,11 +14,14 @@ public interface ApprovalOutboxRepository {
 
     Optional<List<OrderApprovalOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatus(String type,
                                                                                      OutboxStatus outboxStatus,
+                                                                                      //varArgs param
                                                                                      SagaStatus... sagaStatus);
     Optional<OrderApprovalOutboxMessage> findByTypeAndSagaIdAndSagaStatus(String type,
                                                                          UUID sagaId,
+                                                                          //varArgs param
                                                                          SagaStatus... sagaStatus);
     void deleteByTypeAndOutboxStatusAndSagaStatus(String type,
                                                   OutboxStatus outboxStatus,
+                                                  //varArgs param
                                                   SagaStatus... sagaStatus);
 }

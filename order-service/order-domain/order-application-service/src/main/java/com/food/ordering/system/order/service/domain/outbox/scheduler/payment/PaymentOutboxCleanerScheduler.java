@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Cleaner class that will remove events that are COMPLETED, in order to avoid getting a table too large
+ * it will run at midnight
+ */
 @Slf4j
 @Component
 public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
@@ -25,6 +29,8 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
     @Override
     @Scheduled(cron = "@midnight")
     public void processOutboxMessage() {
+
+        // Fetching for all events with outbox completed AND saga final statuses
         Optional<List<OrderPaymentOutboxMessage>> outboxMessagesResponse =
                 paymentOutboxHelper.getPaymentOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.COMPLETED,
@@ -36,6 +42,7 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
             List<OrderPaymentOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderPaymentOutboxMessage for clean-up. The payloads: {}",
                     outboxMessages.size(),
+                    //collect the payloads with \n delimiter
                     outboxMessages.stream().map(OrderPaymentOutboxMessage::getPayload)
                             .collect(Collectors.joining("\n")));
             paymentOutboxHelper.deletePaymentOutboxMessageByOutboxStatusAndSagaStatus(

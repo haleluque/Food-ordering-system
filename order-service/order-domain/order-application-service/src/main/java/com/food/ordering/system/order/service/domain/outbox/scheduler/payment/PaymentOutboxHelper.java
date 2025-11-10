@@ -35,7 +35,8 @@ public class PaymentOutboxHelper {
     @Transactional(readOnly = true)
     public Optional<List<OrderPaymentOutboxMessage>> getPaymentOutboxMessageByOutboxStatusAndSagaStatus(
             OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
-        return paymentOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME,
+        return paymentOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(
+                ORDER_SAGA_NAME,
                 outboxStatus,
                 sagaStatus);
     }
@@ -83,9 +84,6 @@ public class PaymentOutboxHelper {
 
     /**
      * creates a json representation of the payload as string
-     *
-     * @param paymentEventPayload
-     * @return
      */
     private String createPayload(OrderPaymentEventPayload paymentEventPayload) {
         try {

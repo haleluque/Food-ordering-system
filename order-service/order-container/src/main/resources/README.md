@@ -24,15 +24,15 @@ This document describes the configuration settings for the **Order Service** in 
 
 These Kafka topics are used for inter-service communication.
 
-| Property | Description |
-|---------|-------------|
-| `payment-request-topic-name` | Topic for sending payment requests |
-| `payment-response-topic-name` | Topic for receiving payment responses |
-| `restaurant-approval-request-topic-name` | Topic for sending restaurant approval requests |
-| `restaurant-approval-response-topic-name` | Topic for receiving restaurant approval responses |
-| `customer-topic-name` | Topic for customer-related events |
-| `outbox-scheduler-fixed-rate` | Scheduler interval in milliseconds (default: `10000`) |
-| `outbox-scheduler-initial-delay` | Initial delay before scheduler starts (default: `10000`) |
+| Property | Description                                                                                                      |
+|---------|------------------------------------------------------------------------------------------------------------------|
+| `payment-request-topic-name` | Topic for sending payment requests                                                                               |
+| `payment-response-topic-name` | Topic for receiving payment responses                                                                            |
+| `restaurant-approval-request-topic-name` | Topic for sending restaurant approval requests                                                                   |
+| `restaurant-approval-response-topic-name` | Topic for receiving restaurant approval responses                                                                |
+| `customer-topic-name` | Topic for customer-related events                                                                                |
+| `outbox-scheduler-fixed-rate` | Scheduler interval in milliseconds (default: `10000`), it will pull the outbox table every 10 seconds by default |
+| `outbox-scheduler-initial-delay` | Initial delay before scheduler starts (default: `10000`)                                                         |
 
 ---
 

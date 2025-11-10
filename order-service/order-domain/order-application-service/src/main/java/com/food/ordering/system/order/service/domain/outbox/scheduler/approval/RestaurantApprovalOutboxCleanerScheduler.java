@@ -12,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Cleaner class that will remove events that are COMPLETED, in order to avoid getting a table too large
+ * it will run at midnight
+ */
 @Slf4j
 @Component
 public class RestaurantApprovalOutboxCleanerScheduler implements OutboxScheduler {

@@ -68,6 +68,8 @@ CREATE TYPE saga_status_enum AS ENUM ('STARTED', 'FAILED', 'SUCCEEDED', 'PROCESS
 DROP TYPE IF EXISTS outbox_status;
 CREATE TYPE outbox_status AS ENUM ('STARTED', 'COMPLETED', 'FAILED');
 
+--In this implementation, there are two separate tables for handling events, separated by domain
+--in order to keep the concept segregated
 DROP TABLE IF EXISTS "order".payment_outbox CASCADE;
 
 CREATE TABLE "order".payment_outbox

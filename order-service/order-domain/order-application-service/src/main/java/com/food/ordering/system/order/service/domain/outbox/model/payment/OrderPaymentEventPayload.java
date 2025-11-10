@@ -8,11 +8,14 @@ import lombok.Getter;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
+/**
+ * This class is the JSON representation of the event domains for payments
+ * that will be saved in the local outbox table, within the 'OrderPaymentOutboxMessage' - payload field as a string
+ */
 @Getter
 @Builder
 @AllArgsConstructor
 public class OrderPaymentEventPayload {
-
     @JsonProperty
     private String orderId;
     @JsonProperty

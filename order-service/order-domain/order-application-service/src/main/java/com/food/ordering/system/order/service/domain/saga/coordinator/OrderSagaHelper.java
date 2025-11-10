@@ -40,19 +40,17 @@ public class OrderSagaHelper {
         orderRepository.save(order);
     }
 
+    /**
+     * Obtains a SagaStatus from the OrderStatus to be saved in the outbox table
+     */
     public SagaStatus orderStatusToSagaStatus(OrderStatus orderStatus) {
-        switch (orderStatus) {
-            case PAID:
-                return SagaStatus.PROCESSING;
-            case APPROVED:
-                return SagaStatus.SUCCEEDED;
-            case CANCELLING:
-                return SagaStatus.COMPENSATING;
-            case CANCELLED:
-                return SagaStatus.COMPENSATED;
-            default:
-                return SagaStatus.STARTED;
-        }
+        return switch (orderStatus) {
+            case PAID -> SagaStatus.PROCESSING;
+            case APPROVED -> SagaStatus.SUCCEEDED;
+            case CANCELLING -> SagaStatus.COMPENSATING;
+            case CANCELLED -> SagaStatus.COMPENSATED;
+            default -> SagaStatus.STARTED;
+        };
     }
 }
 

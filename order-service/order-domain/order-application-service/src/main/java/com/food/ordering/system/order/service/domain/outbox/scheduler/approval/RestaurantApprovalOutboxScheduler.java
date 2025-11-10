@@ -14,6 +14,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation class of the OutboxScheduler interface, it will be responsible for the extraction and publishing
+ * of the events saved in the local outbox table. Those events are related with the restaurant-service
+ */
 @Slf4j
 @Component
 public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
@@ -29,6 +33,10 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
         this.restaurantApprovalRequestMessagePublisher = restaurantApprovalRequestMessagePublisher;
     }
 
+    /**
+     * This method will run every ten seconds (check the outbox-scheduler-fixed-rate property),
+     * it will extract every event saved on the outbox tables and publish the corresponding events to kafka
+     */
     @Override
     @Transactional
     @Scheduled(fixedDelayString = "${order-service.outbox-scheduler-fixed-rate}",
@@ -38,7 +46,7 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
                 approvalOutboxHelper.getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.STARTED,
                         SagaStatus.PROCESSING);
-        if (outboxMessagesResponse.isPresent() && outboxMessagesResponse.get().size() > 0) {
+        if (outboxMessagesResponse.isPresent() && !outboxMessagesResponse.get().isEmpty()) {
             List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderApprovalOutboxMessage with ids: {}, sending to message bus!",
                     outboxMessages.size(),
@@ -51,6 +59,10 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
         }
     }
 
+    /**
+     * BiConsumer call back method, it updates the outbox status after receiving the confirmation from Kafka
+     * It will receive the OutboxStatus from the KafkaMessageHelper.getKafkaCallback method, depending on if it failed or not
+     */
     private void updateOutboxStatus(OrderApprovalOutboxMessage orderApprovalOutboxMessage, OutboxStatus outboxStatus) {
         orderApprovalOutboxMessage.setOutboxStatus(outboxStatus);
         approvalOutboxHelper.save(orderApprovalOutboxMessage);
