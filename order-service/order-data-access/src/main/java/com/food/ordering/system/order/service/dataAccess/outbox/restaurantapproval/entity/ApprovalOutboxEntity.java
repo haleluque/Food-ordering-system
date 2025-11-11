@@ -32,6 +32,7 @@ public class ApprovalOutboxEntity {
     private OrderStatus orderStatus;
     @Enumerated(EnumType.STRING)
     private OutboxStatus outboxStatus;
+    //Optimistic locking for this JPA entity
     @Version
     private int version;
 

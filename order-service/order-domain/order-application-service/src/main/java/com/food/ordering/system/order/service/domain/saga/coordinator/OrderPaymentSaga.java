@@ -53,6 +53,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     @Override
     @Transactional
     public void process(PaymentResponse paymentResponse) {
+        //reading the outbox event with PENDING status order
         Optional<OrderPaymentOutboxMessage> orderPaymentOutboxMessageResponse =
                 paymentOutboxHelper.getPaymentOutboxMessageBySagaIdAndSagaStatus(
                         UUID.fromString(paymentResponse.getSagaId()),
@@ -66,9 +67,12 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         OrderPaymentOutboxMessage orderPaymentOutboxMessage = orderPaymentOutboxMessageResponse.get();
         OrderPaidEvent domainEvent = completePaymentForOrder(paymentResponse);
         SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(domainEvent.getOrder().getOrderStatus());
+
+        //Updates the event information in the outbox table in payment
         paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage,
                 domainEvent.getOrder().getOrderStatus(), sagaStatus));
 
+        //Sends a new event to the approval outbox table for the restaurant service
         approvalOutboxHelper
                 .saveApprovalOutboxMessage(orderDataMapper.orderPaidEventToOrderApprovalEventPayload(domainEvent),
                         domainEvent.getOrder().getOrderStatus(),
@@ -82,7 +86,6 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     @Override
     @Transactional
     public void rollback(PaymentResponse paymentResponse) {
-
         Optional<OrderPaymentOutboxMessage> orderPaymentOutboxMessageResponse =
                 paymentOutboxHelper.getPaymentOutboxMessageBySagaIdAndSagaStatus(
                         UUID.fromString(paymentResponse.getSagaId()),
@@ -96,10 +99,13 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
         OrderPaymentOutboxMessage orderPaymentOutboxMessage = orderPaymentOutboxMessageResponse.get();
         Order order = rollbackPaymentForOrder(paymentResponse);
         SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(order.getOrderStatus());
+
+        //Updates the event information in the outbox table in payment
         paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(orderPaymentOutboxMessage,
                 order.getOrderStatus(), sagaStatus));
 
         if (paymentResponse.getPaymentStatus() == PaymentStatus.CANCELLED) {
+            //Updates the event information in the outbox table in approval
             approvalOutboxHelper.save(getUpdatedApprovalOutboxMessage(paymentResponse.getSagaId(),
                     order.getOrderStatus(), sagaStatus));
         }

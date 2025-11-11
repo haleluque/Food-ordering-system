@@ -30,11 +30,7 @@ public class OrderCreateCommandHandler {
 
     /**
      * Method that creates, persist and publish a createOrderCommand
-     * For this exercise, there are 2 branches where 2 options of publishing were implemented. For more details, go to:
-     * - publish-event-option-1
-     * - publish-event-option-2
-     * The one used in master branch is option 1
-     *
+     * It uses the outbox table to publish the event to kafka
      * @param createOrderCommand create order command object
      * @return CreateOrderResponse object
      */
@@ -42,16 +38,18 @@ public class OrderCreateCommandHandler {
     public CreateOrderResponse createOrder(CreateOrderCommand createOrderCommand) {
         OrderCreatedEvent orderCreatedEvent = orderCreateHelper.persistOrder(createOrderCommand);
         log.info("Order is created with id {}", orderCreatedEvent.getOrder().getId().getValue());
-        CreateOrderResponse createOrderResponse = orderDataMapper.orderToCreateOrderResponse(orderCreatedEvent.getOrder(), "Order created successfully");
+        CreateOrderResponse createOrderResponse = orderDataMapper.orderToCreateOrderResponse(
+                orderCreatedEvent.getOrder(), "Order created successfully");
 
-        paymentOutboxHelper.savePaymentOutboxMessage(orderDataMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent),
+        //save in outbox table
+        paymentOutboxHelper.savePaymentOutboxMessage(
+                orderDataMapper.orderCreatedEventToOrderPaymentEventPayload(orderCreatedEvent),
                 orderCreatedEvent.getOrder().getOrderStatus(),
                 orderSagaHelper.orderStatusToSagaStatus(orderCreatedEvent.getOrder().getOrderStatus()),
                 OutboxStatus.STARTED,
-                UUID.randomUUID());
+                UUID.randomUUID()); //as SAGA flow starts here, we set a random uuid
 
         log.info("Returning CreateOrderResponse with order id: {}", orderCreatedEvent.getOrder().getId());
-
         return createOrderResponse;
     }
 }

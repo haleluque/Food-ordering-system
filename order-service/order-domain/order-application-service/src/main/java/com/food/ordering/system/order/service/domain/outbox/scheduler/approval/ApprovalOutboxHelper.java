@@ -35,7 +35,8 @@ public class ApprovalOutboxHelper {
     public Optional<List<OrderApprovalOutboxMessage>>
     getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
             OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
-        return approvalOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME,
+        return approvalOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(
+                ORDER_SAGA_NAME,
                 outboxStatus,
                 sagaStatus);
     }
@@ -92,5 +93,4 @@ public class ApprovalOutboxHelper {
                     orderApprovalEventPayload.getOrderId(), e);
         }
     }
-
 }

@@ -75,6 +75,7 @@ CREATE INDEX "payment_order_outbox_saga_status"
     ON "payment".order_outbox
     (type, payment_status);
 
+--Even if optimistic lock fails, the unique index will prevent duplicated data in the outbox table
 CREATE UNIQUE INDEX "payment_order_outbox_saga_id_payment_status_outbox_status"
     ON "payment".order_outbox
     (type, saga_id, payment_status, outbox_status);

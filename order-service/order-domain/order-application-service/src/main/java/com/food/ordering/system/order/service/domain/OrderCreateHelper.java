@@ -26,7 +26,9 @@ public class OrderCreateHelper {
     private final RestaurantRepository restaurantRepository;
     private final OrderDataMapper orderDataMapper;
 
-    public OrderCreateHelper(OrderDomainService orderDomainService, OrderRepository orderRepository, CustomerRepository customerRepository, RestaurantRepository restaurantRepository, OrderDataMapper orderDataMapper) {
+    public OrderCreateHelper(OrderDomainService orderDomainService, OrderRepository orderRepository,
+                             CustomerRepository customerRepository, RestaurantRepository restaurantRepository,
+                             OrderDataMapper orderDataMapper) {
         this.orderDomainService = orderDomainService;
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;

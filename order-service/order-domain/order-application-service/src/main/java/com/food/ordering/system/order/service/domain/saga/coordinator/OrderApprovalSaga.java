@@ -56,6 +56,7 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
     @Override
     @Transactional
     public void process(RestaurantApprovalResponse restaurantApprovalResponse) {
+        //reading the outbox event with PAID status order
         Optional<OrderApprovalOutboxMessage> orderApprovalOutboxMessageResponse =
                 approvalOutboxHelper.getApprovalOutboxMessageBySagaIdAndSagaStatus(
                         UUID.fromString(restaurantApprovalResponse.getSagaId()),
@@ -71,8 +72,11 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
         Order order = approveOrder(restaurantApprovalResponse);
         SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(order.getOrderStatus());
 
+        //Updates the event information in the outbox table in approval
         approvalOutboxHelper.save(getUpdatedApprovalOutboxMessage(orderApprovalOutboxMessage,
                 order.getOrderStatus(), sagaStatus));
+
+        //Updates the event information in the outbox table in payment
         paymentOutboxHelper.save(getUpdatedPaymentOutboxMessage(restaurantApprovalResponse.getSagaId(),
                 order.getOrderStatus(), sagaStatus));
 
@@ -97,9 +101,11 @@ public class OrderApprovalSaga implements SagaStep<RestaurantApprovalResponse> {
         OrderCancelledEvent domainEvent = rollbackOrder(restaurantApprovalResponse);
         SagaStatus sagaStatus = orderSagaHelper.orderStatusToSagaStatus(domainEvent.getOrder().getOrderStatus());
 
+        //Updates the event information in the outbox table in approval
         approvalOutboxHelper.save(getUpdatedApprovalOutboxMessage(orderApprovalOutboxMessage,
                 domainEvent.getOrder().getOrderStatus(), sagaStatus));
 
+        //Sends a new event to the approval outbox table for the payment service
         paymentOutboxHelper.savePaymentOutboxMessage(orderDataMapper
                         .orderCancelledEventToOrderPaymentEventPayload(domainEvent),
                 domainEvent.getOrder().getOrderStatus(),

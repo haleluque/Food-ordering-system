@@ -29,12 +29,14 @@ public class RestaurantApprovalOutboxCleanerScheduler implements OutboxScheduler
     @Override
     @Scheduled(cron = "@midnight")
     public void processOutboxMessage() {
+        // Fetching for all events with outbox completed AND saga final statuses
         Optional<List<OrderApprovalOutboxMessage>> outboxMessagesResponse =
                 approvalOutboxHelper.getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.COMPLETED,
                         SagaStatus.SUCCEEDED,
                         SagaStatus.FAILED,
                         SagaStatus.COMPENSATED);
+
         if (outboxMessagesResponse.isPresent()) {
             List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderApprovalOutboxMessage for clean-up. The payloads: {}",

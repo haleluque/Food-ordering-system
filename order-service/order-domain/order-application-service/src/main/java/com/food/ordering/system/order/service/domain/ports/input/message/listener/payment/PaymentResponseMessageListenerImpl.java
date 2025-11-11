@@ -8,6 +8,10 @@ import org.springframework.validation.annotation.Validated;
 
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGE_DELIMITER;
 
+/**
+ * Special type of adapter, that is implemented inside the application-service
+ * Receives the information from the kafka listener and completes or cancels a payment
+ */
 @Slf4j
 @Validated
 @Service

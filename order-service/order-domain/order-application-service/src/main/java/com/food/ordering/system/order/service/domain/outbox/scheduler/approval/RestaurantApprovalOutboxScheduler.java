@@ -42,6 +42,8 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
     @Scheduled(fixedDelayString = "${order-service.outbox-scheduler-fixed-rate}",
             initialDelayString = "${order-service.outbox-scheduler-initial-delay}")
     public void processOutboxMessage() {
+
+        // Fetching for all events that represents Orders with PAID status
         Optional<List<OrderApprovalOutboxMessage>> outboxMessagesResponse =
                 approvalOutboxHelper.getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
                         OutboxStatus.STARTED,
@@ -50,12 +52,12 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
             List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderApprovalOutboxMessage with ids: {}, sending to message bus!",
                     outboxMessages.size(),
+                    //prints the ids
                     outboxMessages.stream().map(outboxMessage ->
                             outboxMessage.getId().toString()).collect(Collectors.joining(",")));
             outboxMessages.forEach(outboxMessage ->
                     restaurantApprovalRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
             log.info("{} OrderApprovalOutboxMessage sent to message bus!", outboxMessages.size());
-
         }
     }
 

@@ -45,6 +45,7 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
                     //collect the payloads with \n delimiter
                     outboxMessages.stream().map(OrderPaymentOutboxMessage::getPayload)
                             .collect(Collectors.joining("\n")));
+
             paymentOutboxHelper.deletePaymentOutboxMessageByOutboxStatusAndSagaStatus(
                     OutboxStatus.COMPLETED,
                     SagaStatus.SUCCEEDED,

@@ -91,6 +91,7 @@ CREATE INDEX "restaurant_order_outbox_saga_status"
     ON "restaurant".order_outbox
     (type, approval_status);
 
+--Even if optimistic lock fails, the unique index will prevent duplicated data in the outbox table
 CREATE UNIQUE INDEX "restaurant_order_outbox_saga_id"
     ON "restaurant".order_outbox
     (type, saga_id, approval_status, outbox_status);

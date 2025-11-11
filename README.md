@@ -1,6 +1,6 @@
 # 🍽️ Food Ordering System – Guide
 
-The following Spring boot project creates abasic foodordering system that works with:
+The following Spring boot project creates a basic food ordering system that works with:
 - Microservices
 - Clean and Hexagonal Architecture
 - DDD (Domain Driven Design)
@@ -10,7 +10,7 @@ The following Spring boot project creates abasic foodordering system that works 
 - Kafka
 - Kubernetes and GKE
 
-Check for some useful reousrces in the resources folder.
+Check for some useful resources in the resources folder.
 
 ---
 
