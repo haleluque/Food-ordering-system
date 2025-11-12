@@ -23,6 +23,7 @@ import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE
  * - Listen to the kafka topics coming from the restaurant service
  * - Execute the logic inside the input port's adapters that are in the order-application service layer
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<RestaurantApprovalResponseAvroModel> {
@@ -36,6 +37,11 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
         this.orderMessagingDataMapper = orderMessagingDataMapper;
     }
 
+    /**
+     * Method that listens and process to the topic where restaurant events are published
+     * If other exceptions that are not caught here are thrown, they will propagate and spring will assume the event
+     * listener method has failed, it will read the same message again from kafka (re-try)
+     */
     @Override
     @KafkaListener(id = "${kafka-consumer-config.restaurant-approval-consumer-group-id}",
             topics = "${order-service.restaurant-approval-response-topic-name}")
@@ -65,6 +71,7 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                     restaurantApprovalResponseMessageListener.orderRejected(orderMessagingDataMapper
                             .approvalResponseAvroModelToApprovalResponse(restaurantApprovalResponseAvroModel));
                 }
+                //Catch thrown optimistic error in order to avoid re-trying
             } catch (OptimisticLockingFailureException e) {
                 //NO-OP for optimistic lock. This means another thread finished the work, do not throw error to prevent reading the data from kafka again!
                 log.error("Caught optimistic locking exception in RestaurantApprovalResponseKafkaListener for order id: {}",

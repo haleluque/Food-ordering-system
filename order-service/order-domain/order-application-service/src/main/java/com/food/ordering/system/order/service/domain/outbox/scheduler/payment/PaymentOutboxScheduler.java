@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
  * Implementation class of the OutboxScheduler interface, it will be responsible for the extraction and publishing
  * of the events saved in the local outbox table. Those events are related with the payment-service
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
-public final class PaymentOutboxScheduler implements OutboxScheduler {
+public class PaymentOutboxScheduler implements OutboxScheduler {
 
     private final PaymentOutboxHelper paymentOutboxHelper;
     private final PaymentRequestMessagePublisher paymentRequestMessagePublisher;

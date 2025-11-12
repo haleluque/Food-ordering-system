@@ -31,7 +31,7 @@ public class OrderMessagingDataMapper {
     }
 
     public RestaurantApprovalResponse
-        approvalResponseAvroModelToApprovalResponse(RestaurantApprovalResponseAvroModel
+    approvalResponseAvroModelToApprovalResponse(RestaurantApprovalResponseAvroModel
                                                         restaurantApprovalResponseAvroModel) {
         return RestaurantApprovalResponse.builder()
                 .id(restaurantApprovalResponseAvroModel.getId().toString())
@@ -59,7 +59,7 @@ public class OrderMessagingDataMapper {
     }
 
     public RestaurantApprovalRequestAvroModel
-        orderApprovalEventToRestaurantApprovalRequestAvroModel(String sagaId, OrderApprovalEventPayload
+    orderApprovalEventToRestaurantApprovalRequestAvroModel(String sagaId, OrderApprovalEventPayload
             orderApprovalEventPayload) {
         return RestaurantApprovalRequestAvroModel.newBuilder()
                 .setId(UUID.randomUUID())

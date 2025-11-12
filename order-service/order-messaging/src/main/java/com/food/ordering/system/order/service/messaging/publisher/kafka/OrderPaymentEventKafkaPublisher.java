@@ -17,6 +17,7 @@ import java.util.function.BiConsumer;
 /**
  * Implementation of the output port 'PaymentRequestMessagePublisher' that publishes messages to kafka topics
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePublisher {
@@ -38,9 +39,6 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
 
     /**
      * This method receives the event from the outbox table and publish it to kafka
-     *
-     * @param orderPaymentOutboxMessage
-     * @param outboxCallback
      */
     @Override
     public void publish(OrderPaymentOutboxMessage orderPaymentOutboxMessage,
@@ -59,6 +57,9 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
             PaymentRequestAvroModel paymentRequestAvroModel = orderMessagingDataMapper
                     .orderPaymentEventToPaymentRequestAvroModel(sagaId, orderPaymentEventPayload);
 
+            //sagaId param is sent as the 'key' param, so the messages belongs to the same sagaId will be in the same
+            //partition, and they will be ordered.
+            //Kafka guarantees ordering in a single partition
             kafkaProducer.send(
                     orderServiceConfigData.getPaymentRequestTopicName(),
                     sagaId,
@@ -75,11 +76,9 @@ public class OrderPaymentEventKafkaPublisher implements PaymentRequestMessagePub
             log.info("OrderPaymentEventPayload sent to Kafka for order id: {} and saga id: {}",
                     orderPaymentEventPayload.getOrderId(), sagaId);
         } catch (Exception e) {
-           log.error("Error while sending OrderPaymentEventPayload" +
-                           " to kafka with order id: {} and saga id: {}, error: {}",
-                   orderPaymentEventPayload.getOrderId(), sagaId, e.getMessage());
+            log.error("Error while sending OrderPaymentEventPayload" +
+                            " to kafka with order id: {} and saga id: {}, error: {}",
+                    orderPaymentEventPayload.getOrderId(), sagaId, e.getMessage());
         }
-
-
     }
 }

@@ -25,8 +25,13 @@ import static com.food.ordering.system.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 
+/**
+ * Test class for integration test for saga and outbox
+ */
+@SuppressWarnings("unused")
 @Slf4j
-@SpringBootTest(classes = OrderServiceApplication.class) //like im starting the application
+@SpringBootTest(classes = OrderServiceApplication.class) //like im starting the application (spring boot context)
+//set-up and clean-up sqls files
 @Sql(value = {"classpath:sql/OrderPaymentSagaTestSetUp.sql"})
 @Sql(value = {"classpath:sql/OrderPaymentSagaTestCleanUp.sql"}, executionPhase = AFTER_TEST_METHOD)
 public class OrderPaymentSagaTest {
@@ -43,6 +48,10 @@ public class OrderPaymentSagaTest {
     private final UUID PAYMENT_ID = UUID.randomUUID();
     private final BigDecimal PRICE = new BigDecimal("100");
 
+    /**
+     * Mocking the scenario where a message is read twice in different threads
+     * expected optimistic lock to work
+     */
     @Test
     void testDoublePayment() {
         orderPaymentSaga.process(getPaymentResponse());
@@ -50,8 +59,8 @@ public class OrderPaymentSagaTest {
     }
 
     /**
-     * this test needs the sql indexes commented on the init-schema.sql
-     * @throws InterruptedException
+     * this test needs the sql unique indexes commented on the init-schema.sql
+     * It should throw 'ObjectOptimisticLockingFailureException'
      */
     @Test
     void testDoublePaymentWithThreads() throws InterruptedException {
@@ -67,8 +76,15 @@ public class OrderPaymentSagaTest {
         assertPaymentOutbox();
     }
 
+    /**
+     * similar test as 'testDoublePaymentWithThreads' but with CountDownLatch and catching the
+     * optimistic exception to log a message
+     * this test needs the sql unique indexes commented on the init-schema.sql
+     */
     @Test
     void testDoublePaymentWithLatch() throws InterruptedException {
+        //Sync construct, that allows one or more threads to wait until a set of operations
+        //being performed in other threads are completed
         CountDownLatch latch = new CountDownLatch(2);
 
         Thread thread1 = new Thread(() -> {
@@ -97,7 +113,6 @@ public class OrderPaymentSagaTest {
         latch.await();
 
         assertPaymentOutbox();
-
     }
 
     private void assertPaymentOutbox() {
@@ -107,6 +122,9 @@ public class OrderPaymentSagaTest {
         assertTrue(paymentOutboxEntity.isPresent());
     }
 
+    /**
+     * Mocks the response object that comes from the payment service within an event
+     */
     private PaymentResponse getPaymentResponse() {
         return PaymentResponse.builder()
                 .id(UUID.randomUUID().toString())
@@ -120,5 +138,4 @@ public class OrderPaymentSagaTest {
                 .failureMessages(new ArrayList<>())
                 .build();
     }
-
 }

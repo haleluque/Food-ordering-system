@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class CustomerKafkaListener implements KafkaConsumer<CustomerAvroModel> {

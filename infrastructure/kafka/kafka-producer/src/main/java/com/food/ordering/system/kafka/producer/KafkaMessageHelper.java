@@ -22,11 +22,8 @@ public class KafkaMessageHelper {
     }
 
     /**
-     * Generic method to extract and cast the payload field from the outbox table's field
-     * @param payload
-     * @param outputType
-     * @param <T>
-     * @return
+     * Generic method to extract and cast the payload field from the outbox table's field (JSON)
+     * It could receive either 'OrderApprovalEventPayload' or 'OrderPaymentEventPayload' classes
      */
     public <T> T getOrderEventPayload(String payload, Class<T> outputType) {
         try {
@@ -37,6 +34,12 @@ public class KafkaMessageHelper {
         }
     }
 
+    /**
+     * Generic Callback method that is executed when kafka responses after publishing an event,
+     * It is responsible as well for sending the end state for the Outbox transaction to its implementation,
+     * depending on the kafka response
+     * ('e.g' RestaurantApprovalOutboxScheduler.updateOutboxStatus impl method)
+     */
     public <T, U> BiConsumer<SendResult<String, T>, Throwable> getKafkaCallback(String responseTopicName, T avroModel, U outboxMessage,
                                                                                 BiConsumer<U, OutboxStatus> outboxCallback,
                                                                                 String orderId, String avroModelName) {
@@ -59,6 +62,7 @@ public class KafkaMessageHelper {
         };
     }
 
+//DEPRECATED
 //    public <T> ListenableFutureCallback<SendResult<String, T>>
 //    getKafkaCallback(String responseTopicName, T avroModel, String orderId, String avroModelName) {
 //        return new ListenableFutureCallback<SendResult<String, T>>() {

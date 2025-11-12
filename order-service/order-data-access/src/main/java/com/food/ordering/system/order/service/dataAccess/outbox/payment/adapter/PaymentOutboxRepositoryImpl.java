@@ -15,6 +15,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Adapter implementation of the output port
+ */
+@SuppressWarnings("unused")
 @Component
 public class PaymentOutboxRepositoryImpl implements PaymentOutboxRepository {
 

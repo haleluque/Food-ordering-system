@@ -10,6 +10,9 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Outbox table for restaurant events
+ */
 @Getter
 @Setter
 @Builder

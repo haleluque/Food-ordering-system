@@ -1,7 +1,6 @@
 package com.food.ordering.system.order.service.dataAccess.outbox.payment.entity;
 
 import com.food.ordering.system.domain.valueobject.OrderStatus;
-import com.food.ordering.system.order.service.dataAccess.outbox.payment.mapper.SagaStatusConverter;
 import com.food.ordering.system.outbox.OutboxStatus;
 import com.food.ordering.system.saga.SagaStatus;
 import jakarta.persistence.*;
@@ -11,6 +10,9 @@ import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * Outbox table for payment events
+ */
 @Getter
 @Setter
 @Builder

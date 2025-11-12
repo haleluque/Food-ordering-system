@@ -15,6 +15,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Adapter implementation of the output port
+ */
+@SuppressWarnings("unused")
 @Component
 public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
 
@@ -37,10 +41,10 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
 
     @Override
     public Optional<List<OrderApprovalOutboxMessage>> findByTypeAndOutboxStatusAndSagaStatus(String sagaType,
-                                                                                       OutboxStatus outboxStatus,
-                                                                       SagaStatus... sagaStatus) {
+                                                                                             OutboxStatus outboxStatus,
+                                                                                             SagaStatus... sagaStatus) {
         return Optional.of(approvalOutboxJpaRepository.findByTypeAndOutboxStatusAndSagaStatusIn(sagaType, outboxStatus,
-                Arrays.asList(sagaStatus))
+                        Arrays.asList(sagaStatus))
                 .orElseThrow(() -> new ApprovalOutboxNotFoundException("Approval outbox object " +
                         "could be found for saga type " + sagaType))
                 .stream()
@@ -56,7 +60,6 @@ public class ApprovalOutboxRepositoryImpl implements ApprovalOutboxRepository {
                 .findByTypeAndSagaIdAndSagaStatusIn(type, sagaId,
                         Arrays.asList(sagaStatus))
                 .map(approvalOutboxDataAccessMapper::approvalOutboxEntityToOrderApprovalOutboxMessage);
-
     }
 
     @Override
