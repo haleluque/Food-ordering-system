@@ -17,6 +17,7 @@ import java.util.function.BiConsumer;
 /**
  * Implementation of the output port 'PaymentResponseMessagePublisher' that publishes messages to kafka topics
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublisher {
@@ -36,6 +37,9 @@ public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublish
         this.kafkaMessageHelper = kafkaMessageHelper;
     }
 
+    /**
+     * This method receives the event from the outbox table and publish it to kafka
+     */
     @Override
     public void publish(OrderOutboxMessage orderOutboxMessage,
                         BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback) {
@@ -52,11 +56,16 @@ public class PaymentEventKafkaPublisher implements PaymentResponseMessagePublish
             PaymentResponseAvroModel paymentResponseAvroModel = paymentMessagingDataMapper
                     .orderEventPayloadToPaymentResponseAvroModel(sagaId, orderEventPayload);
 
-            kafkaProducer.send(paymentServiceConfigData.getPaymentResponseTopicName(),
+            //sagaId param is sent as the 'key' param, so the messages belongs to the same sagaId will be in the same
+            //partition, and they will be ordered.
+            //Kafka guarantees ordering in a single partition
+            kafkaProducer.send(
+                    paymentServiceConfigData.getPaymentResponseTopicName(),
                     sagaId,
                     paymentResponseAvroModel,
                     //executed when getting a response from the kafka cluster
-                    kafkaMessageHelper.getKafkaCallback(paymentServiceConfigData.getPaymentResponseTopicName(),
+                    kafkaMessageHelper.getKafkaCallback(
+                            paymentServiceConfigData.getPaymentResponseTopicName(),
                             paymentResponseAvroModel,
                             orderOutboxMessage,
                             outboxCallback,

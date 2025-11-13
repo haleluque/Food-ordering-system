@@ -5,10 +5,15 @@ import com.food.ordering.system.outbox.OutboxStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+/**
+ * This class models the fields that are found in the outbox table for the order domain
+ * regarding a response to the Order events
+ */
 @Getter
 @Builder
 @AllArgsConstructor
@@ -19,11 +24,9 @@ public class OrderOutboxMessage {
     private ZonedDateTime processedAt;
     private String type;
     private String payload;
+    @Setter
     private OutboxStatus outboxStatus;
     private OrderApprovalStatus approvalStatus;
     private int version;
 
-    public void setOutboxStatus(OutboxStatus status) {
-        this.outboxStatus = status;
-    }
 }

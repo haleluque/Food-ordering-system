@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Valid
 @Service
+@SuppressWarnings("unused")
 class OrderApplicationServiceImpl implements OrderApplicationService {
     private final OrderCreateCommandHandler orderCreateCommandHandler;
     private final OrderTrackCommandHandler orderTrackCommandHandler;

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
+@SuppressWarnings("unused")
 public class CustomerMessageListenerImpl implements CustomerMessageListener {
 
     private final CustomerRepository customerRepository;

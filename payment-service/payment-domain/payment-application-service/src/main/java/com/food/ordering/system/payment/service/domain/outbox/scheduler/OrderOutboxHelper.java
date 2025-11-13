@@ -37,8 +37,8 @@ public class OrderOutboxHelper {
     public Optional<OrderOutboxMessage> getCompletedOrderOutboxMessageBySagaIdAndPaymentStatus(UUID sagaId,
                                                                                                PaymentStatus
                                                                                                        paymentStatus) {
-        return orderOutboxRepository.findByTypeAndSagaIdAndPaymentStatusAndOutboxStatus(ORDER_SAGA_NAME, sagaId,
-                paymentStatus, OutboxStatus.COMPLETED);
+        return orderOutboxRepository.findByTypeAndSagaIdAndPaymentStatusAndOutboxStatus(
+                ORDER_SAGA_NAME, sagaId, paymentStatus, OutboxStatus.COMPLETED);
     }
 
     @Transactional(readOnly = true)
@@ -68,6 +68,10 @@ public class OrderOutboxHelper {
                 .build());
     }
 
+    /**
+     * BiConsumer call back method, it updates the outbox status after receiving the confirmation from Kafka
+     * It will receive the OutboxStatus from the KafkaMessageHelper.getKafkaCallback method, depending on if it failed or not
+     */
     @Transactional
     public void updateOutboxMessage(OrderOutboxMessage orderOutboxMessage, OutboxStatus outboxStatus) {
         orderOutboxMessage.setOutboxStatus(outboxStatus);
@@ -75,6 +79,9 @@ public class OrderOutboxHelper {
         log.info("Order outbox table status is updated as: {}", outboxStatus.name());
     }
 
+    /**
+     * creates a json representation of the payload as string
+     */
     private String createPayload(OrderEventPayload orderEventPayload) {
         try {
             return objectMapper.writeValueAsString(orderEventPayload);

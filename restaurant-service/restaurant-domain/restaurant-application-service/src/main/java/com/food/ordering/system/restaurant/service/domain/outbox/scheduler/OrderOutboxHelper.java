@@ -68,6 +68,10 @@ public class OrderOutboxHelper {
                 .build());
     }
 
+    /**
+     * BiConsumer call back method, it updates the outbox status after receiving the confirmation from Kafka
+     * It will receive the OutboxStatus from the KafkaMessageHelper.getKafkaCallback method, depending on if it failed or not
+     */
     @Transactional
     public void updateOutboxStatus(OrderOutboxMessage orderPaymentOutboxMessage, OutboxStatus outboxStatus) {
         orderPaymentOutboxMessage.setOutboxStatus(outboxStatus);
@@ -83,6 +87,9 @@ public class OrderOutboxHelper {
         log.info("OrderOutboxMessage saved with id: {}", orderPaymentOutboxMessage.getId());
     }
 
+    /**
+     * creates a json representation of the payload as string
+     */
     private String createPayload(OrderEventPayload orderEventPayload) {
         try {
             return objectMapper.writeValueAsString(orderEventPayload);

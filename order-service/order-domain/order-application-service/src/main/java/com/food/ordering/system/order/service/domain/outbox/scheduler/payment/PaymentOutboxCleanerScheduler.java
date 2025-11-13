@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
  * Cleaner class that will remove events that are COMPLETED, in order to avoid getting a table too large
  * it will run at midnight
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class PaymentOutboxCleanerScheduler implements OutboxScheduler {

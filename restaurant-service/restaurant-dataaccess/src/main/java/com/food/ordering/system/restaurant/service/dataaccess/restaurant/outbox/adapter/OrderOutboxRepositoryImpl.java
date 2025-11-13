@@ -13,6 +13,10 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
+@SuppressWarnings("unused")
 @Component
 public class OrderOutboxRepositoryImpl implements OrderOutboxRepository {
 

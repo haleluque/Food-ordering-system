@@ -23,6 +23,7 @@ import java.util.List;
  * - Listen to the kafka topics coming from the order service
  * - Execute the logic inside the input port's adapters that are in the restaurant-application service layer
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<RestaurantApprovalRequestAvroModel> {
@@ -38,6 +39,11 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
         this.restaurantMessagingDataMapper = restaurantMessagingDataMapper;
     }
 
+    /**
+     * Method that listens and process to the topic where order events are published
+     * If other exceptions that are not caught here are thrown, they will propagate and spring will assume the event
+     * listener method has failed, it will read the same message again from kafka (re-try)
+     */
     @Override
     @KafkaListener(id = "${kafka-consumer-config.restaurant-approval-consumer-group-id}",
             topics = "${restaurant-service.restaurant-approval-request-topic-name}")
@@ -59,6 +65,8 @@ public class RestaurantApprovalRequestKafkaListener implements KafkaConsumer<Res
                         restaurantMessagingDataMapper.
                             restaurantApprovalRequestAvroModelToRestaurantApproval(restaurantApprovalRequestAvroModel));
             } catch (DataAccessException e) {
+                //As we have the unique index "restaurant_order_outbox_saga_id", we do not need
+                //to catch OptimisticErrorException, but to handle SQLException UNIQUE validation
                 SQLException sqlException = (SQLException) e.getRootCause();
                 if (sqlException != null && sqlException.getSQLState() != null &&
                         PSQLState.UNIQUE_VIOLATION.getState().equals(sqlException.getSQLState())) {

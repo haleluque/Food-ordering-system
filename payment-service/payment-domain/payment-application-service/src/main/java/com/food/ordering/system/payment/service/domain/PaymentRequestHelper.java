@@ -55,6 +55,9 @@ public class PaymentRequestHelper {
 
     @Transactional
     public void persistPayment(PaymentRequest paymentRequest) {
+        //If somehow the order service fails to process the payment response event (with Outbox completed status), and tries
+        //to send the create order event again, to be paid by this service, this method will check if tht order was already
+        //paid and send the response back again. Avoiding paying it again.
         if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.COMPLETED)) {
             outboxMessageDuplicatedLog(paymentRequest);
             return;
@@ -69,7 +72,8 @@ public class PaymentRequestHelper {
                 paymentDomainService.validateAndInitiatePayment(payment, creditEntry, creditHistories, failureMessages);
         persistDbObjects(payment, creditEntry, creditHistories, failureMessages);
 
-        orderOutboxHelper.saveOrderOutboxMessage(paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
+        orderOutboxHelper.saveOrderOutboxMessage(
+                paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentRequest.getSagaId()));
@@ -77,6 +81,9 @@ public class PaymentRequestHelper {
 
     @Transactional
     public void persistCancelPayment(PaymentRequest paymentRequest) {
+        //If somehow the order service fails to process the order cancelled response event (with Outbox completed status), and tries
+        //to send the cancel order event again, to be cancelled by this service, this method will check if tht order was already
+        //processed and send the response back again. Avoiding cancelling it again.
         if (publishIfOutboxMessageProcessedForPayment(paymentRequest, PaymentStatus.CANCELLED)) {
             outboxMessageDuplicatedLog(paymentRequest);
             return;
@@ -98,7 +105,9 @@ public class PaymentRequestHelper {
                 .validateAndCancelPayment(payment, creditEntry, creditHistories, failureMessages);
         persistDbObjects(payment, creditEntry, creditHistories, failureMessages);
 
-        orderOutboxHelper.saveOrderOutboxMessage(paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
+        //No optimistic locking needed as we don't update the outbox table records, just add new ones
+        orderOutboxHelper.saveOrderOutboxMessage(
+                paymentDataMapper.paymentEventToOrderEventPayload(paymentEvent),
                 paymentEvent.getPayment().getPaymentStatus(),
                 OutboxStatus.STARTED,
                 UUID.fromString(paymentRequest.getSagaId()));
@@ -135,6 +144,11 @@ public class PaymentRequestHelper {
         }
     }
 
+    /**
+     * Method that will re-send the response event with either COMPLETED or CANCELLED payment status to the order service
+     * in case that service fails to process those events and re-send the request event (create order or cancel order)
+     * This will publish direct to kafka, not using the scheduler
+     */
     private boolean publishIfOutboxMessageProcessedForPayment(PaymentRequest paymentRequest,
                                                               PaymentStatus paymentStatus) {
         Optional<OrderOutboxMessage> orderOutboxMessage =

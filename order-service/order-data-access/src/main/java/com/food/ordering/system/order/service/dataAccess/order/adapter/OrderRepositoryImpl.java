@@ -13,6 +13,7 @@ import java.util.Optional;
 /**
  * Implementation of the output port found in the domain layer
  */
+@SuppressWarnings("unused")
 @Component
 public class OrderRepositoryImpl implements OrderRepository {
 

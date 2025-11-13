@@ -8,6 +8,10 @@ import lombok.Getter;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+/**
+ * This class is the JSON representation of the event domains for restaurant approval
+ * that will be saved in the local outbox table, within the 'OrderOutboxMessage' - payload field as a string
+ */
 @Getter
 @Builder
 @AllArgsConstructor

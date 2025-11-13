@@ -1,13 +1,17 @@
 package com.food.ordering.system.payment.service.domain;
 
 import com.food.ordering.system.payment.service.domain.dto.PaymentRequest;
-import com.food.ordering.system.payment.service.domain.event.PaymentEvent;
 import com.food.ordering.system.payment.service.domain.ports.input.message.listener.PaymentRequestMessageListener;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the input port application, but
+ * remain restricted, as it only exposes the interface, not the details of the implementation
+ */
 @Slf4j
 @Service
+@SuppressWarnings("unused")
 public class PaymentRequestMessageListenerImpl implements PaymentRequestMessageListener {
 
     private final PaymentRequestHelper paymentRequestHelper;

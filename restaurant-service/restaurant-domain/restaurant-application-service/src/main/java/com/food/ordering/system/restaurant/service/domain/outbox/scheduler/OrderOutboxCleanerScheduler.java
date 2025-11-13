@@ -11,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Cleaner class that will remove events that are COMPLETED, in order to avoid getting a table too large
+ * it will run at midnight
+ */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class OrderOutboxCleanerScheduler implements OutboxScheduler {
@@ -25,9 +30,11 @@ public class OrderOutboxCleanerScheduler implements OutboxScheduler {
     @Scheduled(cron = "@midnight")
     @Override
     public void processOutboxMessage() {
+        // Fetching for all events with outbox completed status
         Optional<List<OrderOutboxMessage>> outboxMessagesResponse =
                 orderOutboxHelper.getOrderOutboxMessageByOutboxStatus(OutboxStatus.COMPLETED);
-        if (outboxMessagesResponse.isPresent() && outboxMessagesResponse.get().size() > 0) {
+
+        if (outboxMessagesResponse.isPresent() && !outboxMessagesResponse.get().isEmpty()) {
             List<OrderOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderOutboxMessage for clean-up!", outboxMessages.size());
             orderOutboxHelper.deleteOrderOutboxMessageByOutboxStatus(OutboxStatus.COMPLETED);

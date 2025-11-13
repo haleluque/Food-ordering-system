@@ -12,6 +12,7 @@ import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE
  * Special type of adapter, that is implemented inside the application-service
  * Receives the information from the kafka listener and completes or cancels a payment
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Validated
 @Service

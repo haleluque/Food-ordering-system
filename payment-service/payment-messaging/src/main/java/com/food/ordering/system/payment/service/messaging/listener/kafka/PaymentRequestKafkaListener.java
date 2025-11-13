@@ -24,6 +24,7 @@ import java.util.List;
  * - Listen to the kafka topics coming from the payment service
  * - Execute the logic inside the input port's adapters that are in the payment-application service layer
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequestAvroModel> {
@@ -36,6 +37,11 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
         this.paymentMessagingDataMapper = paymentMessagingDataMapper;
     }
 
+    /**
+     * Method that listens and process to the topic where order events are published
+     * If other exceptions that are not caught here are thrown, they will propagate and spring will assume the event
+     * listener method has failed, it will read the same message again from kafka (re-try)
+     */
     @Override
     @KafkaListener(id = "${kafka-consumer-config.payment-consumer-group-id}",
             topics = "${payment-service.payment-request-topic-name}")
@@ -61,6 +67,8 @@ public class PaymentRequestKafkaListener implements KafkaConsumer<PaymentRequest
                             .paymentRequestAvroModelToPaymentRequest(paymentRequestAvroModel));
                 }
             } catch (DataAccessException e) {
+                //As we have the unique index "payment_order_outbox_saga_id_payment_status_outbox_status", we do not need
+                //to catch OptimisticErrorException, but to handle SQLException UNIQUE validation
                 SQLException sqlException = (SQLException) e.getRootCause();
                 if (sqlException != null && sqlException.getSQLState() != null &&
                         PSQLState.UNIQUE_VIOLATION.getState().equals(sqlException.getSQLState())) {

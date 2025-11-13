@@ -17,6 +17,7 @@ import java.util.function.BiConsumer;
 /**
  * Implementation of the output port 'RestaurantApprovalResponseMessagePublisher' that publishes messages to kafka topics
  */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class RestaurantApprovalEventKafkaPublisher implements RestaurantApprovalResponseMessagePublisher {
@@ -37,6 +38,9 @@ public class RestaurantApprovalEventKafkaPublisher implements RestaurantApproval
         this.kafkaMessageHelper = kafkaMessageHelper;
     }
 
+    /**
+     * This method receives the event from the outbox table and publish it to kafka
+     */
     @Override
     public void publish(OrderOutboxMessage orderOutboxMessage,
                         BiConsumer<OrderOutboxMessage, OutboxStatus> outboxCallback) {
@@ -54,6 +58,9 @@ public class RestaurantApprovalEventKafkaPublisher implements RestaurantApproval
                     restaurantMessagingDataMapper
                             .orderEventPayloadToRestaurantApprovalResponseAvroModel(sagaId, orderEventPayload);
 
+            //sagaId param is sent as the 'key' param, so the messages belongs to the same sagaId will be in the same
+            //partition, and they will be ordered.
+            //Kafka guarantees ordering in a single partition
             kafkaProducer.send(
                     restaurantServiceConfigData.getRestaurantApprovalResponseTopicName(),
                     sagaId,

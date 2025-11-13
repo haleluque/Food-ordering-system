@@ -5,6 +5,11 @@ import com.food.ordering.system.restaurant.service.domain.ports.input.message.li
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the input port application, but
+ * remain restricted, as it only exposes the interface, not the details of the implementation
+ */
+@SuppressWarnings("unused")
 @Slf4j
 @Service
 public class RestaurantApprovalRequestMessageListenerImpl implements RestaurantApprovalRequestMessageListener {

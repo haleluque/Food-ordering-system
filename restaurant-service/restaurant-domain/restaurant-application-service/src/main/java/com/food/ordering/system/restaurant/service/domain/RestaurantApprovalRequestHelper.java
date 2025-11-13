@@ -49,6 +49,9 @@ public class RestaurantApprovalRequestHelper {
 
     @Transactional
     public void persistOrderApproval(RestaurantApprovalRequest restaurantApprovalRequest) {
+        //If somehow the order service fails to process the order approval response event (with Outbox completed status), and tries
+        //to send the approval order event again, to be approved by this service, this method will check if tht order was already
+        //approved and send the response back again. Avoiding processing it again.
         if (publishIfOutboxMessageProcessed(restaurantApprovalRequest)) {
             log.info("An outbox message with saga id: {} already saved to database!",
                     restaurantApprovalRequest.getSagaId());
@@ -64,6 +67,7 @@ public class RestaurantApprovalRequestHelper {
                         failureMessages);
         orderApprovalRepository.save(restaurant.getOrderApproval());
 
+        //No optimistic locking here as we don't update any outbox record, only add
         orderOutboxHelper
                 .saveOrderOutboxMessage(restaurantDataMapper.orderApprovalEventToOrderEventPayload(orderApprovalEvent),
                         orderApprovalEvent.getOrderApproval().getApprovalStatus(),
@@ -76,7 +80,7 @@ public class RestaurantApprovalRequestHelper {
                 .restaurantApprovalRequestToRestaurant(restaurantApprovalRequest);
         Optional<Restaurant> restaurantResult = restaurantRepository.findRestaurantInformation(restaurant);
         if (restaurantResult.isEmpty()) {
-            log.error("Restaurant with id " + restaurant.getId().getValue() + " not found!");
+            log.error("Restaurant with id {} not found!", restaurant.getId().getValue());
             throw new RestaurantNotFoundException("Restaurant with id " + restaurant.getId().getValue() +
                     " not found!");
         }
@@ -94,6 +98,11 @@ public class RestaurantApprovalRequestHelper {
         return restaurant;
     }
 
+    /**
+     * Method that will re-send the response event with either COMPLETED approval status to the order service
+     * in case that service fails to process those events and re-send the request event (approve order)
+     * This will publish direct to kafka, not using the scheduler
+     */
     private boolean publishIfOutboxMessageProcessed(RestaurantApprovalRequest restaurantApprovalRequest) {
         Optional<OrderOutboxMessage> orderOutboxMessage =
                 orderOutboxHelper.getCompletedOrderOutboxMessageBySagaIdAndOutboxStatus(UUID

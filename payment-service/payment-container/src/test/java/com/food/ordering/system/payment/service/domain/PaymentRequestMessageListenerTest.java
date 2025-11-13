@@ -24,8 +24,12 @@ import static com.food.ordering.system.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Test class for integration test for saga and outbox
+ */
+@SuppressWarnings("unused")
 @Slf4j
-@SpringBootTest(classes = PaymentServiceApplication.class)
+@SpringBootTest(classes = PaymentServiceApplication.class) //like im starting the application (spring boot context)
 public class PaymentRequestMessageListenerTest {
 
     @Autowired
@@ -37,6 +41,10 @@ public class PaymentRequestMessageListenerTest {
     private final static String CUSTOMER_ID = "d215b5f8-0249-4dc5-89a3-51fd148cfb41";
     private final static BigDecimal PRICE = new BigDecimal("100");
 
+    /**
+     * Mocking the scenario where a message is read twice in different threads
+     * expected unique data exception
+     */
     @Test
     void testDoublePayment() {
         String sagaId = UUID.randomUUID().toString();
@@ -50,6 +58,10 @@ public class PaymentRequestMessageListenerTest {
         assertOrderOutbox(sagaId);
     }
 
+    /**
+     * Mocking the scenario where a message is being read concurrently twice, using threads
+     * expected unique data exception
+     */
     @Test
     void testDoublePaymentWithThreads() {
         String sagaId = UUID.randomUUID().toString();
@@ -99,6 +111,9 @@ public class PaymentRequestMessageListenerTest {
         assertEquals(orderOutboxEntity.get().getSagaId().toString(), sagaId);
     }
 
+    /**
+     * Mocks the request object that comes from the order service within an event
+     */
     private PaymentRequest getPaymentRequest(String sagaId) {
         return PaymentRequest.builder()
                 .id(UUID.randomUUID().toString())
