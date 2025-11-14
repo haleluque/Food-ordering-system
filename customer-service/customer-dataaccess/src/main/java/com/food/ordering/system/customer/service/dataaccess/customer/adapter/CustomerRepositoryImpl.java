@@ -6,6 +6,10 @@ import com.food.ordering.system.customer.service.domain.entity.Customer;
 import com.food.ordering.system.customer.service.domain.ports.output.repository.CustomerRepository;
 import org.springframework.stereotype.Component;
 
+/**
+ * Implementation of the output port found in the domain layer
+ */
+@SuppressWarnings("unused")
 @Component
 public class CustomerRepositoryImpl implements CustomerRepository {
 

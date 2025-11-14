@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * REST controller to access customer endpoints
+ */
+@SuppressWarnings("unused")
 @Slf4j
 @RestController
 @RequestMapping(value = "/customers", produces = "application/vnd.api.v1+json")
@@ -28,5 +32,4 @@ public class CustomerController {
         CreateCustomerResponse response = customerApplicationService.createCustomer(createCustomerCommand);
         return ResponseEntity.ok(response);
     }
-
 }

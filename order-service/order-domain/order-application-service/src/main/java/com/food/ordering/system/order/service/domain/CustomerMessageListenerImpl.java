@@ -9,6 +9,9 @@ import com.food.ordering.system.order.service.domain.ports.output.repository.Cus
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * Adapter class that implements the input port 'CustomerMessageListener'
+ */
 @Slf4j
 @Service
 @SuppressWarnings("unused")
@@ -22,6 +25,10 @@ public class CustomerMessageListenerImpl implements CustomerMessageListener {
         this.orderDataMapper = orderDataMapper;
     }
 
+    /**
+     * Method that replicates the customer created in the customer-service,applying the CQRS pattern.
+     * It gets executed when the message listener consumer listens from the customer-topic
+     */
     @Override
     public void customerCreated(CustomerModel customerModel) {
         Customer customer = customerRepository.save(orderDataMapper.customerModelToCustomer(customerModel));

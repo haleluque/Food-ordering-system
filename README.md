@@ -20,7 +20,7 @@ It is composed by 4 microservices
 - Order service
 - Restaurant service
 - Payment service
-- Customer service
+- Customer service (CQRS implementation)
 
 Additionally, It has an infrastructure service that contains, docker-compose with kafka modules necessary 
 to start up the containers.

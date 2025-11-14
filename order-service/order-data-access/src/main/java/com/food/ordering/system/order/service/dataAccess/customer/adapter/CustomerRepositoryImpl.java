@@ -13,6 +13,7 @@ import java.util.UUID;
 /**
  * Implementation of the output port found in the domain layer
  */
+@SuppressWarnings("unused")
 @Component
 public class CustomerRepositoryImpl implements CustomerRepository {
 
@@ -33,9 +34,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Transactional
     @Override
     public Customer save(Customer customer) {
-        return
-            customerDataAccessMapper.customerEntityToCustomer(
-                customerJpaRepository.save(
-                        customerDataAccessMapper.customerToCustomerEntity(customer)));
+        return customerDataAccessMapper.customerEntityToCustomer(
+                        customerJpaRepository.save(
+                                customerDataAccessMapper.customerToCustomerEntity(customer)));
     }
 }

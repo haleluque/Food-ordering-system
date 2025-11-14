@@ -7,6 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * This class works as an Application service class
+ */
 @Slf4j
 public class CustomerDomainServiceImpl implements CustomerDomainService {
 

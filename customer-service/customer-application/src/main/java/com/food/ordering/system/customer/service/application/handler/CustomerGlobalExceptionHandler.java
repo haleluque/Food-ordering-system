@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Global Exception controller class
+ */
+@SuppressWarnings("unused")
 @Slf4j
 @ControllerAdvice
 public class CustomerGlobalExceptionHandler extends GlobalExceptionHandler {
@@ -22,5 +26,4 @@ public class CustomerGlobalExceptionHandler extends GlobalExceptionHandler {
         return ErrorDTO.builder().code(HttpStatus.BAD_REQUEST.getReasonPhrase())
                 .message(exception.getMessage()).build();
     }
-
 }

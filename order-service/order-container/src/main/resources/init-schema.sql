@@ -126,6 +126,8 @@ CREATE INDEX "restaurant_approval_outbox_saga_status"
 --    ON "order".restaurant_approval_outbox
 --    (type, saga_id, saga_status);
 
+--CQRS table that will be updated when the customer service dispatches a command
+--it is a clone of the same customer table in the customer service
 DROP TABLE IF EXISTS "order".customers CASCADE;
 
 CREATE TABLE "order".customers

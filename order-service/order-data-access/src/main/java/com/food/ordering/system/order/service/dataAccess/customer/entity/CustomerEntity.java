@@ -12,6 +12,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+//Changed from the materialized view into a local customer table
 @Table(name = "customers")
 @Entity
 public class CustomerEntity {

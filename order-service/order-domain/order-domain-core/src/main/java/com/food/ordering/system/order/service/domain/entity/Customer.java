@@ -3,6 +3,10 @@ package com.food.ordering.system.order.service.domain.entity;
 import com.food.ordering.system.domain.entity.AggregateRoot;
 import com.food.ordering.system.domain.valueobject.CustomerId;
 
+/**
+ * Clone entity from the customer service that will update the local database using the CQRS pattern
+ */
+@SuppressWarnings("LombokGetterMayBeUsed")
 public class Customer extends AggregateRoot<CustomerId> {
 
     private String username;

@@ -13,14 +13,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.function.BiConsumer;
 
+/**
+ * Implementation of the output port 'CustomerMessagePublisher' that publishes messages to kafka topics
+ */
+@SuppressWarnings("unused")
 @Slf4j
 @Component
 public class CustomerCreatedEventKafkaPublisher implements CustomerMessagePublisher {
 
     private final CustomerMessagingDataMapper customerMessagingDataMapper;
-
     private final KafkaProducer<String, CustomerAvroModel> kafkaProducer;
-
     private final CustomerServiceConfigData customerServiceConfigData;
 
     public CustomerCreatedEventKafkaPublisher(CustomerMessagingDataMapper customerMessagingDataMapper,
@@ -31,6 +33,10 @@ public class CustomerCreatedEventKafkaPublisher implements CustomerMessagePublis
         this.customerServiceConfigData = customerServiceConfigData;
     }
 
+    /**
+     * This method publish the event directly to kafka to apply the CQRS pattern, for this example
+     * OUTBOX pattern and saga pattern were not implemented, but they should as in the other services
+     */
     @Override
     public void publish(CustomerCreatedEvent customerCreatedEvent) {
         log.info("Received CustomerCreatedEvent for customer id: {}",
@@ -39,9 +45,13 @@ public class CustomerCreatedEventKafkaPublisher implements CustomerMessagePublis
             CustomerAvroModel customerAvroModel = customerMessagingDataMapper
                     .paymentResponseAvroModelToPaymentResponse(customerCreatedEvent);
 
-            kafkaProducer.send(customerServiceConfigData.getCustomerTopicName(), customerAvroModel.getId().toString(),
+            kafkaProducer.send(
+                    customerServiceConfigData.getCustomerTopicName(),
+                    customerAvroModel.getId().toString(),
                     customerAvroModel,
-                    getCallback(customerServiceConfigData.getCustomerTopicName(), customerAvroModel));
+                    getCallback(
+                            customerServiceConfigData.getCustomerTopicName(),
+                            customerAvroModel));
 
             log.info("CustomerCreatedEvent sent to kafka for customer id: {}",
                     customerAvroModel.getId());
@@ -51,6 +61,9 @@ public class CustomerCreatedEventKafkaPublisher implements CustomerMessagePublis
         }
     }
 
+    /**
+     * BiConsumer call back method, it logs a confirmation or error message, no OUTBOX implementation for this example
+     */
     private BiConsumer<SendResult<String, CustomerAvroModel>, Throwable> getCallback(String topicName, CustomerAvroModel message) {
         return (result, ex) -> {
             if (ex == null) {
@@ -66,25 +79,4 @@ public class CustomerCreatedEventKafkaPublisher implements CustomerMessagePublis
             }
         };
     }
-
-//    private ListenableFutureCallback<SendResult<String, CustomerAvroModel>>
-//    getCallback(String topicName, CustomerAvroModel message) {
-//        return new ListenableFutureCallback<>() {
-//            @Override
-//            public void onFailure(Throwable throwable) {
-//                log.error("Error while sending message {} to topic {}", message.toString(), topicName, throwable);
-//            }
-//
-//            @Override
-//            public void onSuccess(SendResult<String, CustomerAvroModel> result) {
-//                RecordMetadata metadata = result.getRecordMetadata();
-//                log.info("Received new metadata. Topic: {}; Partition {}; Offset {}; Timestamp {}, at time {}",
-//                        metadata.topic(),
-//                        metadata.partition(),
-//                        metadata.offset(),
-//                        metadata.timestamp(),
-//                        System.nanoTime());
-//            }
-//        };
-//    }
 }

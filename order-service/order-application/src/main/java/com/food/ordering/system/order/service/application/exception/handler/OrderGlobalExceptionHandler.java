@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * Global Exception controller class
  */
+@SuppressWarnings("unused")
 @Slf4j
 @ControllerAdvice
 public class OrderGlobalExceptionHandler extends GlobalExceptionHandler {
