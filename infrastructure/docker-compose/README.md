@@ -35,6 +35,10 @@ If error encountered, and the 'volumes/kafka' and 'volumes/zookeeper' folders ha
 ```
 
 ### 🔁 Initialize Kafka Topics
+
+Run this command whenever you need to do a fresh start, as topic will be re-created. Another alternative is to delete 
+the "volumes" folder to do a fresh start, when you start up the cluster.
+
 ```bash
   docker-compose -f common.yml -f init_kafka.yml up --force-recreate
 ```
@@ -57,6 +61,9 @@ http://localhost:9000/
 Register the cluster manually:
 - Cluster name: food-ordering-system-cluster
 - Cluster zookeeper host: zookeeper:2181
+
+Another alternative to see the state of the cluster and the info within the brokers, consumers and topics is
+"Offset Explorer", you can download it here -> https://www.kafkatool.com/
 ---
 
 ## 🔁 Netcat (Nmap)
