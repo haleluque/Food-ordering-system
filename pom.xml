@@ -34,7 +34,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mockito.version>5.5.0</mockito.version>
         <junit.version>4.13.2</junit.version>
-        <spring-kafka.version>3.1.1</spring-kafka.version>
+        <spring-kafka.version>3.3.11</spring-kafka.version>
         <kafka-avro-serializer.version>7.0.1</kafka-avro-serializer.version>
         <avro.version>1.11.3</avro.version>
     </properties>

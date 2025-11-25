@@ -126,6 +126,10 @@ Type a message in one terminal and press Enter — it will appear in the other.
 ```bash
   kubectl apply -f application-deployment-local.yaml
 ```
+### ❌ Delete the application deployment
+```bash
+  kubectl delete -f application-deployment-local.yaml
+```
 
 ### 📄 View Logs
 ```bash
